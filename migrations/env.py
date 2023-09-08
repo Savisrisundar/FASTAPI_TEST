@@ -32,7 +32,7 @@ target_metadata.naming_convention={
     "pk":"pk_%(table_name)s",
 }
 from test_app.users.models import User
-
+from test_app.todos.models import Todos
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
