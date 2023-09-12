@@ -1,14 +1,17 @@
 ex_todos_read={
-    "task_name":"task1",
-    "description":"this is an example",
-    "duration":"example of total time to complete",
-    "status":"completed",
-}
-
-ex_todos_create={
     "id":1,
     "task_name":"task1",
     "description":"this is an example",
-    "duration":"example of total time to complete",
-    "status":"completed",
+    "duration":5,
+    "status":"done",
+    "owner_id":0
+}
+
+ex_todos_create={
+    
+    "task_name":"task1",
+    "description":"this is an example",
+    "duration":2,
+    "status":"not done",
+    
 }

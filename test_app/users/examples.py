@@ -11,4 +11,7 @@ ex_user_create={
     "email":"user_1@example.com",
     "username":"user_1",
     "password":"user_1_password",
+    "is_active":True,
+    "admin":False,
+    
 }

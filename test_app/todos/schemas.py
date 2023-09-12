@@ -2,11 +2,14 @@ from pydantic import BaseModel
 from test_app.todos.examples import ex_todos_create, ex_todos_read
 from datetime import datetime
 
+
+
 class todosSchemaBase(BaseModel):
     task_name:str
     description:str
-    duration:datetime
-    
+    duration:int
+    status:str
+    owner_id:int
 
 class todosSchemaCreate(todosSchemaBase):
     status:str

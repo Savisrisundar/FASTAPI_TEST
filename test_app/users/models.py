@@ -1,4 +1,6 @@
 from test_app.core.db import Base
+
+from sqlalchemy.orm import relationship
 from sqlalchemy import Column, Integer, String, Boolean
 
 class User(Base):
@@ -9,6 +11,8 @@ class User(Base):
     email=Column(String,unique=True,index=True)
     hashed_password=Column(String,nullable=False)
     is_active=Column(Boolean(), default=True)
+    admin=Column(Boolean(),default=False)
+    todos=relationship("Todos",back_populates="owner")
     
     
     
