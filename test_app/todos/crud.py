@@ -31,9 +31,7 @@ async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
 
 async def get_todos_by_id(id:int,db:AsyncSession):
     
-    todo=select(Todos).where(Todos.id==id)
-    result=await db.execute(todo)
-    todo=result.scalars().one_or_none
+    todo = await db.get(Todos, id)
     return todo
     
 
