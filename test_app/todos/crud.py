@@ -10,16 +10,10 @@ async def get_todos(db:AsyncSession):
     todos=result.scalars().all()
     return todos
 async def get_todosid_by_ownerid(id:int,db:AsyncSession):
-    test=select(Todos)
+    test=select(Todos).where(Todos.owner_id==id)
     result=await db.execute(test)
-    todo=result.scalars().all()
-    net=None
-    for i in todo:
-        print(i.owner_id)
-        print(id)
-        if(i.owner_id==id):
-            net=i.id
-            return net
+    todo=result.scalars().one_or_none
+    net=todo
     if(net is None):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

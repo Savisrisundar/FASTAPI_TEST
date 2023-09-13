@@ -1,17 +1,15 @@
-from sqlalchemy import select,update
-import sqlalchemy as sa
+from sqlalchemy import select
 from test_app.core.db import get_async_session
 from fastapi import Depends,HTTPException,status
 import bcrypt
 from sqlalchemy.orm import Session
 from test_app.users.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
-import sqlalchemy.ext.asyncio 
 from test_app.users.schemas import UserSchema,UserSchemaCreate
 from passlib.context import CryptContext
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-import asyncio
+
 
 JWT_SECRET="savi"
 ALGORITHM="HS256"
@@ -21,32 +19,10 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
 
 
 async def get_user_by_username(db:AsyncSession,username:str):
-  
-    """Gets the user with the given username."""
-    #test=select(User).where(User.username==username)
-    #result = await db.execute(test)
-    #result=dict(result)
     statement = select(User).where(User.username==username)
     result= await db.execute(statement)
     user=result.scalars().one_or_none()
-    """val=None
-    
-    for i in users:
-        print(i)
-        if (i.username==username):
-            val=i
-            break
-    
-        
-    
-    print(val)"""
     return user
-    #print(username)
-    #username1=select(User).where(User.username==username1)
-    #user = await db.get(User,username)
-    
-    #print(user)
-    #return user
     
 
 async def get_password(db,username):
@@ -71,13 +47,8 @@ async def verify_password(password:str, hashed_password:str):
     
 
 async def hash_password(password:str):
-    """Hashes a password using bcrypt."""
-    #hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
     print(password)
     return password
-
-
-
 
 async def get_users(db: AsyncSession):
     statement = select(User)
@@ -97,8 +68,6 @@ async def authenticate_user(db:AsyncSession,username:str,password:str):
 
 async def create_user(db:AsyncSession, user:UserSchemaCreate):
     hash_password=user.password
-    
-    #pop out user from password
     del user.password
     db_user=User(**user.dict())
     db_user.hashed_password=hash_password
@@ -162,27 +131,10 @@ async def check_active(token:str=Depends(oauth2_scheme)):
     
 async def check_admin(payload: bool = Depends(check_active)):
     print("payload", payload)
-    #role = payload.get("role")
-    """if role != 'admin':
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="this is accessible only by admins",
-        )"""
-
     return payload
 async def check_active_user(token:str=Depends(oauth2_scheme),db=Depends(get_async_session)):
     payload=await verify_token(token)
-    """print("payload:",payload)
-    async def get_payload(payload):
-        return dict(payload)
-    payload = await get_payload(payload)
-    print(payload)"""
     username=payload.get("username")
-    #active1=payload.get("role_is_admin:")
-    """if active1 is True:
-        return get_users(db)
-    else:
-        return get_user_by_username(db,active)"""
     user=await get_user_by_username(db,username)
     if user.is_active==True:
         return user
@@ -190,13 +142,8 @@ async def check_active_user(token:str=Depends(oauth2_scheme),db=Depends(get_asyn
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="use is not active",)
-    
-
-
-    
 
 async def check_crt_user(payload: bool = Depends(check_active_user)):
-    #active=payload.get("username")
     
     print(payload)
     
