@@ -10,14 +10,16 @@ async def get_todos(db:AsyncSession):
     todos=result.scalars().all()
     return todos
 async def get_todosid_by_ownerid(id:int,db:AsyncSession):
-    test=select(Todos).where(Todos.owner_id==id)
-    result=await db.execute(test)
-    todo=result.scalars().one_or_none
-    net=todo
-    if(net is None):
+    statement=select(Todos).where(Todos.owner_id==id)
+    result=await db.execute(statement)
+    todo=result.scalars().one_or_none()
+    
+    if todo is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="no todos for this user",)
+    
+    return todo.id
         
 
 async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
@@ -27,15 +29,12 @@ async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
     await db.refresh(db_todo)
     return db_todo
 
-async def get_todos_by_id(db:AsyncSession,id:int):
+async def get_todos_by_id(id:int,db:AsyncSession):
     
-    test=select(Todos)
-    result=await db.execute(test)
-    todo=result.scalars().all()
-    for i in todo:
-        if(i.id==id):
-            return i
-        
+    todo=select(Todos).where(Todos.id==id)
+    result=await db.execute(todo)
+    todo=result.scalars().one_or_none
+    return todo
     
 
 

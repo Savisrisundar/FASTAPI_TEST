@@ -5,12 +5,12 @@ from test_app.todos import crud as todos_crud
 from test_app.users import crud as users_crud
 from test_app.todos.schemas import todosSchema,todosSchemaCreate
 router=APIRouter()
-@router.get("/{owner_id}",response_model=todosSchema,status_code=200,)
+@router.get("/{owner_id}",response_model=todosSchema|None,status_code=200,)
 
 async def get_todos(id:int,db=Depends(get_async_session)):
     print(id)
     todos1=await todos_crud.get_todosid_by_ownerid(id,db)
-    todos=await todos_crud.get_todos_by_id(db,todos1)
+    todos=await todos_crud.get_todos_by_id(todos1,db)
     return todos
     
 @router.post("/{username}",response_model=todosSchema,status_code=201,)
