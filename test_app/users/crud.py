@@ -93,7 +93,7 @@ async def delete_user(id:int,db:AsyncSession):
     
     user = await db.get(User, id)
     if not user:
-        raise HTTPException(status_code=404, detail="Todo not found")
+        raise HTTPException(status_code=404, detail="user not found")
 
     await db.delete(user)
     await db.commit()
