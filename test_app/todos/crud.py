@@ -1,14 +1,15 @@
-from sqlalchemy import select,update
-from sqlalchemy.orm import Session
+from sqlalchemy import select
 from fastapi import HTTPException,status
 from sqlalchemy.ext.asyncio import AsyncSession
 from test_app.todos.models import Todos
-from test_app.todos.schemas import todosSchemaCreate,todosSchema,todosSchemaBase
+from test_app.todos.schemas import todosSchemaCreate,todosSchema
+
 async def get_todos(db:AsyncSession):
     statement=select(Todos)
     result=await db.execute(statement)
     todos=result.scalars().all()
     return todos
+
 async def get_todosid_by_ownerid(id:int,db:AsyncSession):
     statement=select(Todos).where(Todos.owner_id==id)
     result=await db.execute(statement)

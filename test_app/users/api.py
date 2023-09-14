@@ -13,6 +13,15 @@ JWT_SECRET="savi"
 ALGORITHM="HS256"
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
 
+@router.get("/me",response_model=UserSchema, status_code=200,dependencies=[Depends(users_crud.check_active_user)])
+
+async def get_me(db=Depends(get_async_session)):
+    
+    username=await users_crud.get_saved_username()
+    username1=await users_crud.get_user_by_username(db,username)
+    return username1
+
+
 @router.get("/{username}",response_model=UserSchema|None, status_code=200,dependencies=[Depends(users_crud.check_admin)])
 
 async def get_user(username:str,db=Depends(get_async_session)):
@@ -21,9 +30,7 @@ async def get_user(username:str,db=Depends(get_async_session)):
     user=await users_crud.get_user_by_username(db,username)    
     return user 
 
-"""@router.get("/me",response_model=UserSchema|None, status_code=200)
-async def get_me(user=Depends(users_crud.check_active_user)):
-    return user"""
+
 
 @router.post("/", response_model=UserSchema, status_code=201,dependencies=[Depends(users_crud.check_admin)])
 
@@ -33,10 +40,16 @@ async def create_user(user:UserSchemaCreate,db=Depends(get_async_session)):
     
     result=await users_crud.create_user(db, user)
     return result
+
 @router.post("/token", response_model=Token)
+
 async def login_user(form_data:OAuth2PasswordRequestForm=Depends(),db=Depends(get_async_session)):
     db_user =await users_crud.get_user_by_username(db,form_data.username)
+    
     print(db_user)
+    
+    #string=db_user.username
+    #print(string)
     if db_user is None:
         raise HTTPException(
         status_code=401, detail="This username not found"
@@ -52,6 +65,7 @@ async def login_user(form_data:OAuth2PasswordRequestForm=Depends(),db=Depends(ge
         
 
 @router.put("/{id}",response_model=UserSchema,status_code=202,dependencies=[Depends(users_crud.check_admin)])
+
 async def update_user(id:int,todos:UserSchema,db=Depends(get_async_session)):
     user=await users_crud.update_user(id,todos,db)
     return user
