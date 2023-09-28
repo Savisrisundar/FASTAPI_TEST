@@ -9,19 +9,20 @@ from test_app.users.schemas import UserSchema,UserSchemaCreate
 from passlib.context import CryptContext
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-
+from test_app.users import api
 
 JWT_SECRET="savi"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
-
-string=""
+access_token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhdml0aGEiLCJyb2xlX2lzX2FkbWluOiI6dHJ1ZX0.C5Eyd9sspMx1rPSc1pDc-C3zcn6dBuWH8HYJ2_1nkeo"
+token_val=""
 async def get_user_by_username(db:AsyncSession,username:str):
     statement = select(User).where(User.username==username)
     result= await db.execute(statement)
     user=result.scalars().one_or_none()
+    print("users are:",user)
     return user
     
 
@@ -99,6 +100,15 @@ async def delete_user(id:int,db:AsyncSession):
     await db.commit()
 
     return user
+async def save_token(token:str):
+    global token_val
+    token_val=token
+    print(token)
+    return token_val
+
+async def get_saved_token():
+    print(token_val)
+    return token_val
 
 
 async def save_username(username:str):
@@ -119,7 +129,7 @@ async def verify_token(token):
                             detail="token is not valid",
                             headers={"WWW-Authenticate":"Bearer"},)
     
-async def check_active(token:str=Depends(oauth2_scheme)):
+async def check_active(token:str=Depends(get_saved_token)):
     payload=await verify_token(token)
     print("payload:",payload)
     
