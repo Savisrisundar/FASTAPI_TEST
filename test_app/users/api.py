@@ -37,7 +37,11 @@ async def get_user(username:str,db=Depends(get_async_session)):
     print("Your details")   
     print(username) 
     user=await users_crud.get_user_by_username(db,username)    
-    return {"users": user}
+    print("username:",user.username)
+    user_schema = UserSchema.from_orm(user)
+    return user_schema
+    #return {"users":"savitha"}
+    #return {"users": user.username}
     #return templates.TemplateResponse("users.html", context=context)
      
 
