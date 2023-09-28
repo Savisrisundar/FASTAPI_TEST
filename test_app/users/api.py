@@ -4,7 +4,7 @@ import requests
 from fastapi.responses import RedirectResponse
 from test_app.core.db import get_async_session
 from test_app.users.models import User
-from test_app.users.schemas import UserSchema,UserSchemaCreate,Token
+from test_app.users.schemas import UserSchema,UserSchemaCreate,Token,UserSchemaBase
 from test_app.users import crud as users_crud
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext

@@ -22,6 +22,8 @@ async def get_user_by_username(db:AsyncSession,username:str):
     statement = select(User).where(User.username==username)
     result= await db.execute(statement)
     user=result.scalars().one_or_none()
+    if user is None:
+        print("None")
     print("users are:",user)
     return user
     
