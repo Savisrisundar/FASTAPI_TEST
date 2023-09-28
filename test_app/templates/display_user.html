@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class = "row">
+    <div class ="col-12">
+        <br><br>
+        <table class= "table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>FullName</th>
+                    <th>Email</th>
+                    <th> UserName</th>
+                    <th>Admin </th>
+                    <th> is_Active</th>
+                    <th> id</th>
+                    
+                </tr>
+
+            </thead>
+            <tbody>
+                {% for rs in users %}
+                    <tr>
+                        <td>{{rs.fullname}}</td>
+                        <td> {{rs.email}}</td>
+                        <td>{{rs.username}}</td>
+                        <td>{{rs.admin}}</td>
+                        <td>{{rs.is_active}}</td>
+                        <td>{{rs.id}}</td>
+                    </tr>
+                {%  endfor %}
+            </tbody>
+                        
+
+        </table>
+    </div>
+</div>
+
+{%endblock content%}

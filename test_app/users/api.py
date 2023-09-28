@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends,HTTPException,Request,status
 from fastapi.templating import Jinja2Templates
 import requests
+import json
 from fastapi.responses import RedirectResponse
 from test_app.core.db import get_async_session
 from test_app.users.models import User
@@ -9,6 +10,7 @@ from test_app.users import crud as users_crud
 from fastapi.security import OAuth2PasswordRequestForm
 from passlib.context import CryptContext
 import jwt
+from pydantic import BaseModel
 
 from fastapi.security import OAuth2PasswordBearer
 templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
@@ -31,19 +33,27 @@ async def get_me(db=Depends(get_async_session)):
     return username1
 
 
-@router.get("/username",response_model=UserSchema|None, status_code=200,dependencies=[Depends(users_crud.check_admin)])
+@router.get("/username",response_model=UserSchema|None|dict, status_code=200,dependencies=[Depends(users_crud.check_admin)])
 
-async def get_user(username:str,db=Depends(get_async_session)):
+async def get_user(request:Request,username:str,db=Depends(get_async_session)):
     print("Your details")   
     print(username) 
     user=await users_crud.get_user_by_username(db,username)    
     print("username:",user.username)
+    
     user_schema = UserSchema.from_orm(user)
-    return user_schema
+    #return user_schema
     #return {"users":"savitha"}
     #return {"users": user.username}
     #return templates.TemplateResponse("users.html", context=context)
-     
+    def pydantic_encoder(obj):
+        if isinstance(obj,BaseModel):
+            return obj.dict()
+        return json.JSONEncoder.default(obj)
+    user_schema_json = json.dumps(user_schema,default=pydantic_encoder)
+    context = {"request":request,"users": user_schema_json}
+    print(context)
+    return templates.TemplateResponse("display_user.html",context=context)
 
 
 
