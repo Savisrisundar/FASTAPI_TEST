@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{%block content%}
+<head>
+  <title>Users</title>
+</head>
+<body>
+  <h1>Users</h1>
+  
+  <form action="/api/v1/users/username/" method="get">
+    <input type="text" name="username" placeholder="Username">
+    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
+  </form>
+</body>
+
+{% endblock content%}
