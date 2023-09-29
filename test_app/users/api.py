@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends,HTTPException,Request,status
+from fastapi import APIRouter, Depends,HTTPException,Request,status,Form
 from fastapi.templating import Jinja2Templates
 import requests
 import json
@@ -64,19 +64,56 @@ async def get_user(request:Request,username:str,db=Depends(get_async_session)):
     context = {"request":request,"users": user_schema_json}
     print(context)"""
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
-
-
-
-
-
-@router.post("/", response_model=UserSchema, status_code=201,dependencies=[Depends(users_crud.check_admin)])
-
-async def create_user(user:UserSchemaCreate,db=Depends(get_async_session)):
-    hashed_password =await users_crud.hash_password(user.password)
-    user.password = hashed_password
+"""async def convert_to_list(request:Request):
+    user_data_list=json.dumps([request.form.__get__("id"),
+                               request.form.__get__("fullname"),
+                               request.form.__get__("email"),
+                               request.form.__get__("username"),
+                               request.form.__get__("password"),
+                               request.form.__get__("is_active"),
+                               request.form.__get__("admin"),])
+    user_data_list=json.loads(request.form.__get__("user_data_list"))
+    return user_data_list"""
     
-    result=await users_crud.create_user(db, user)
-    return result
+
+
+
+
+@router.post("/create",response_model=UserSchema, response_class=templates.TemplateResponse, status_code=201,dependencies=[Depends(users_crud.check_admin)])
+
+async def create_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:bool=Form(...),admin:bool=Form(...),db=Depends(get_async_session)):
+    """user_json = await request.json()
+    user = UserSchemaCreate.from_dict(json.loads(user_json))"""
+    #user.id = str(user.id)
+    print(fullname)
+    fullname=fullname
+    email=email
+    username=username
+    password=password
+    is_active=is_active
+    admin=admin
+    ex_user_create={
+    
+    "fullname":fullname,
+    "email":email,
+    "username":username,
+    "password":password,
+    "is_active":is_active,
+    "admin":admin,
+    
+}
+    async def create_user2(user:UserSchemaCreate,db=Depends(get_async_session)):
+      
+        hashed_password =await users_crud.hash_password(user.get("password"))
+        passs=user.get("password")
+        passs= hashed_password
+        result=await users_crud.create_user(db, user)
+        return result
+    output=await create_user2(ex_user_create,db)
+    return output
+    
+    
+    
 
 @router.post("/token",response_model=Token,response_class=templates.TemplateResponse)
 

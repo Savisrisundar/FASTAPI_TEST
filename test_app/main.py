@@ -38,6 +38,13 @@ async def get_user(request:Request):
     #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("users.html",context=context)
 
+@fastapi_app.get("/usercreate", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request):
+    context={"request":request}
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("create_user.html",context=context)
+
 
 
 

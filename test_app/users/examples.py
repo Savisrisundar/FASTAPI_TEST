@@ -6,7 +6,7 @@ ex_user_read={
 }
 
 ex_user_create={
-    "id":1,
+    
     "fullname":"user 1",
     "email":"user_1@example.com",
     "username":"user_1",

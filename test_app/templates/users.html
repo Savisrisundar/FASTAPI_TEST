@@ -11,6 +11,15 @@
     <input type="text" name="username" placeholder="Username">
     <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
   </form>
+  <h1>My Details</h1>
+  
+  <form action="/api/v1/users/me/" method="get">
+    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
+  </form>
+  <h1>Create Users</h1>
+  <form action="/usercreate" method="get">
+    <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
+  </form>
 </body>
 
 {% endblock content%}

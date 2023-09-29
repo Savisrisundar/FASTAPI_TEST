@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{%block content%}
+<head>
+  <title>Create User</title>
+</head>
+<body>
+  <h1>Give the Details</h1>
+  
+  <form action="/api/v1/users/create/" method="post">
+    <div class="mb-3">
+        <label>Id</label>
+        <input type="text" name="id" placeholder="id" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label>Fullname</label>
+        <input type="text" name="fullname" placeholder="FullName" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="text" name="email" placeholder="Email" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password" class="form-control"/>
+    </div>
+    <div class="mb-3">
+        <label>is_Active</label>
+        <input type="checkbox" name="is_active" placeholder="is_active" />
+    </div>
+    <div class="mb-3">
+        <label>Admin</label>
+        <input type="checkbox" name="admin" />
+    </div>
+    
+    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
+  </form>
+</body>
+
+{% endblock content%}
