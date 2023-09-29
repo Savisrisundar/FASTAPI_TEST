@@ -3,6 +3,7 @@
 
 <div class = "row">
     <div class ="col-12">
+        
         <br><br>
         <table class= "table table-bordered table-striped">
             <thead>
@@ -18,17 +19,20 @@
 
             </thead>
             <tbody>
-                {% for rs in users %}
-                    <tr>
-                        <td>{{rs.fullname}}</td>
-                        <td> {{rs.email}}</td>
-                        <td>{{rs.username}}</td>
-                        <td>{{rs.admin}}</td>
-                        <td>{{rs.is_active}}</td>
-                        <td>{{rs.id}}</td>
-                    </tr>
-                {%  endfor %}
+                <tr>
+                
+                  
+                    <td>{{users[0]}}</td>
+                    <td>{{users[1]}}</td>
+                    <td>{{users[2]}}</td>
+                    <td>{{users[3]}}</td>
+                    <td>{{users[4]}}</td>
+                    <td>{{users[5]}}</td>
+                  
+                
+                </tr>
             </tbody>
+            
                         
 
         </table>

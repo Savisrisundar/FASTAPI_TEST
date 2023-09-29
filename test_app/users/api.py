@@ -22,15 +22,24 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
 payloads={}
 def get_pays():
     return payloads
+def pydantic_encoder(obj):
+        if isinstance(obj, BaseModel):
+            return obj.dict()
+        return json.JSONEncoder.default(obj)
 
 
-@router.get("/me",response_model=UserSchema, status_code=200,dependencies=[Depends(users_crud.check_admin)])
+@router.get("/me",response_model=UserSchema, status_code=200)
 
-async def get_me(db=Depends(get_async_session)):
+async def get_me(request:Request,db=Depends(get_async_session)):
     
     username=await users_crud.get_saved_username()
     username1=await users_crud.get_user_by_username(db,username)
-    return username1
+    user_schema = UserSchema.from_orm(username1)
+    user_schema=dict(user_schema)
+    user_schema_list = list(user_schema.values())
+    print(user_schema)
+    #return username1
+    return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
 
 
 @router.get("/username",response_model=UserSchema|None|dict, status_code=200,dependencies=[Depends(users_crud.check_admin)])
@@ -42,18 +51,19 @@ async def get_user(request:Request,username:str,db=Depends(get_async_session)):
     print("username:",user.username)
     
     user_schema = UserSchema.from_orm(user)
+    user_schema=dict(user_schema)
+    user_schema_list = list(user_schema.values())
+    print(user_schema)
+    #print(user_schema)
     #return user_schema
     #return {"users":"savitha"}
     #return {"users": user.username}
     #return templates.TemplateResponse("users.html", context=context)
-    def pydantic_encoder(obj):
-        if isinstance(obj,BaseModel):
-            return obj.dict()
-        return json.JSONEncoder.default(obj)
-    user_schema_json = json.dumps(user_schema,default=pydantic_encoder)
+   
+    """user_schema_json = json.dumps(user_schema,default=pydantic_encoder)
     context = {"request":request,"users": user_schema_json}
-    print(context)
-    return templates.TemplateResponse("display_user.html",context=context)
+    print(context)"""
+    return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
 
 
 
@@ -89,11 +99,16 @@ async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends
     token = jwt.encode(payload, JWT_SECRET, algorithm=ALGORITHM)
     #global payloads
     # payloads=token
+    save_username=await users_crud.save_username(db_user.username)
     save=await users_crud.save_token(token)
     #return {"access_token": token, "token_type": "bearer"}
     #return RedirectResponse(url=fastapi_app.url_path_for("home"),status_code=status.HTTP_303_SEE_OTHER)
-    context={"request":request}
-    return templates.TemplateResponse("users.html",context=context)
+    if db_user.admin is True:
+        context={"request":request}
+        return templates.TemplateResponse("users.html",context=context)
+    else:
+        context={"request":request}
+        return templates.TemplateResponse("users_not_admin.html",context=context)
 """@router.get("/get_token",response_model=Token)
 async def save_payload():
     global payloads
