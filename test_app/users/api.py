@@ -79,9 +79,9 @@ async def get_user(request:Request,username:str,db=Depends(get_async_session)):
 
 
 
-@router.post("/create",response_model=UserSchema, response_class=templates.TemplateResponse, status_code=201,dependencies=[Depends(users_crud.check_admin)])
+@router.post("/create",response_model=UserSchema, status_code=201,dependencies=[Depends(users_crud.check_admin)])
 
-async def create_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:bool=Form(...),admin:bool=Form(...),db=Depends(get_async_session)):
+async def create_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
     """user_json = await request.json()
     user = UserSchemaCreate.from_dict(json.loads(user_json))"""
     #user.id = str(user.id)
@@ -104,12 +104,12 @@ async def create_user(request:Request,id:int=Form(...),fullname:str=Form(...),em
 }
     async def create_user2(user:UserSchemaCreate,db=Depends(get_async_session)):
       
-        hashed_password =await users_crud.hash_password(user.get("password"))
-        passs=user.get("password")
+        hashed_password =await users_crud.hash_password(user.password)
+        passs=user.password
         passs= hashed_password
         result=await users_crud.create_user(db, user)
         return result
-    output=await create_user2(ex_user_create,db)
+    output=await create_user2(UserSchemaCreate(**ex_user_create),db)
     return output
     
     
