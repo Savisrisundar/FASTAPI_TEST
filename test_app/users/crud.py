@@ -79,15 +79,40 @@ async def create_user(db:AsyncSession, user:UserSchemaCreate):
     await db.refresh(db_user)
     return db_user
 async def update_user(id:int,user:UserSchema,db:AsyncSession):
+    
+    
     user_in_db = await db.get(User, id)
     if not user_in_db:
         raise HTTPException(status_code=404, detail="Todo not found")
-
+    
     user_in_db.fullname = user.fullname
     user_in_db.username = user.username
     user_in_db.email=user.email
+    #user_in_db.hashed_password=user.password
+    user_in_db.is_active=user.is_active
+    user_in_db.admin=user.admin
+    print(user_in_db.hashed_password)
+    
     
 
+    await db.commit()
+
+    return user_in_db
+
+async def update_user_me(id:int,user:UserSchemaCreate,db:AsyncSession):
+    
+    
+    user_in_db = await db.get(User, id)
+    if not user_in_db:
+        raise HTTPException(status_code=404, detail="Todo not found")
+    
+    user_in_db.fullname = user.fullname
+    user_in_db.username = user.username
+    user_in_db.email=user.email
+    user_in_db.hashed_password=user.password
+    user_in_db.is_active=user.is_active
+    user_in_db.admin=user.admin
+    print(user_in_db.hashed_password)
     await db.commit()
 
     return user_in_db
@@ -121,6 +146,11 @@ async def save_username(username:str):
 async def get_saved_username():
     print(string)
     return string
+
+async def get_user_by_id(id:int,db:AsyncSession):
+    
+    todo = await db.get(User, id)
+    return todo
 
 async def verify_token(token):
     try:

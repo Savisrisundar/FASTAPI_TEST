@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{%block content%}
+<head>
+  <title>Update Todo</title>
+</head>
+<body>
+  <h1>Give the Details</h1>
+  
+  <form action="/api/v1/todos/update_me/" method="post">
+    <div class="mb-3">
+        <label>TaskName</label>
+        <input type="text"  name="task_name" placeholder="task_name" class="form-control"  />
+    </div>
+    
+    <div class="mb-3">
+        <label>Description</label>
+        <input type="text" name="description" placeholder="description" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Duration</label>
+        <input type="number" name="duration" placeholder="duration" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label>Status</label>
+        <input type="text" name="status" placeholder="status" class="form-control" />
+    </div>
+    
+    <div class="mb-3">
+        <label>owner_id</label>
+        
+        <input type="number"  name="owner_id" placeholder="owner_id" class="form-control"/>
+  
+        
+    </div>
+    
+    
+    <input type = "submit" value = "Update" class="btn btn-primary mb-3"/>
+  </form>
+</body>
+
+{% endblock content%}

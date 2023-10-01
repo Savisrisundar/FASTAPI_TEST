@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{%block content%}
+<head>
+  <title>Create User</title>
+</head>
+<body>
+  <h1>Give the Details</h1>
+  
+  
+    
+    
+    <div class="mb-3">
+        <label>Fullname</label>
+        <input type="text" name="fullname" placeholder="FullName" class="form-control" value="{{user.fullname}}" readonly/>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="text" name="email" placeholder="Email" class="form-control" value="{{user.email}}" readonly/>
+    </div>
+    <div class="mb-3">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username" class="form-control" value="{{user.username}}" readonly/>
+    </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password" class="form-control" value="{{user.hashed_password}}" readonly/>
+    </div>
+    <div class="mb-3">
+        <label for="is_active">is_active</label><br>
+        
+        <input type="checkbox" name="is_active" >
+        <label>True</label><br>
+        
+        <input type="checkbox" name="is_active" >
+        <label>False</label><br>
+  
+        
+    </div>
+    <div class="mb-3">
+        <label for="admin">admin</label><br>
+        <input type="checkbox" name="admin" value="{{user.admin}}">
+        <label>True</label><br>
+        <input type="checkbox" name="admin" value="{{user.admin}}">
+        <label>False</label><br>
+
+        
+
+        
+    </div>
+  <form action="/api/v1/users/delete/" method="post">
+    <div class="mb-3">
+        <label>id</label>
+        <input type="text"  name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/>
+    </div>
+    <input type = "submit" value = "Delete" class="btn btn-primary mb-3"/>
+  </form>
+</body>
+
+{% endblock content%}

@@ -46,6 +46,7 @@ async def update_todos(id:int,todo:todosSchema,db:AsyncSession):
     todo_in_db.status = todo.status
     todo_in_db.description=todo.description
     todo_in_db.duration=todo.duration
+    print(todo_in_db.description)
 
     await db.commit()
 

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{%block content%}
+<head>
+  <title>Update User</title>
+</head>
+<body>
+  <h1>Give the Details</h1>
+  
+  <form action="/api/v1/users/update_me/" method="post">
+    <div class="mb-3">
+        <label>id</label>
+        <input type="text"  name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/>
+    </div>
+    
+    <div class="mb-3">
+        <label>Fullname</label>
+        <input type="text" name="fullname" placeholder="FullName" class="form-control" value="{{user.fullname}}"/>
+    </div>
+    <div class="mb-3">
+        <label>Email</label>
+        <input type="text" name="email" placeholder="Email" class="form-control" value="{{user.email}}"/>
+    </div>
+    <div class="mb-3">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Username" class="form-control" value="{{user.username}}"/>
+    </div>
+    <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Password" class="form-control" value="{{user.hashed_password}}"/>
+    </div>
+    <div class="mb-3">
+        <label for="is_active">is_active</label><br>
+        
+        <input type="text"  name="is_active" placeholder="is_active" class="form-control" value="{{user.is_active}}" readonly/>
+  
+        
+    </div>
+    <div class="mb-3">
+        <label for="admin">admin</label><br>
+        <input type="text"  name="admin" placeholder="admin" class="form-control" value="{{user.admin}}" readonly/>
+    </div>
+    
+    <input type = "submit" value = "Update" class="btn btn-primary mb-3"/>
+  </form>
+</body>
+
+{% endblock content%}

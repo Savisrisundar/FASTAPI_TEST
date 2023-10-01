@@ -79,9 +79,9 @@ async def get_user(request:Request,username:str,db=Depends(get_async_session)):
 
 
 
-@router.post("/create",response_model=UserSchema, status_code=201,dependencies=[Depends(users_crud.check_admin)])
+@router.post("/create",response_class=templates.TemplateResponse,response_model=UserSchema, status_code=201,dependencies=[Depends(users_crud.check_admin)])
 
-async def create_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
+async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
     """user_json = await request.json()
     user = UserSchemaCreate.from_dict(json.loads(user_json))"""
     #user.id = str(user.id)
@@ -110,7 +110,11 @@ async def create_user(request:Request,id:int=Form(...),fullname:str=Form(...),em
         result=await users_crud.create_user(db, user)
         return result
     output=await create_user2(UserSchemaCreate(**ex_user_create),db)
-    return output
+    user=await users_crud.get_user_by_username(db,output.username)  
+    output = UserSchema.from_orm(user)
+    output=dict(output)
+    user_schema_list = list(output.values())
+    return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
     
     
     
@@ -154,14 +158,75 @@ async def save_payload():
 
     
 
-@router.put("/{id}",response_model=UserSchema,status_code=202,dependencies=[Depends(users_crud.check_admin)])
+@router.post("/update",response_class=templates.TemplateResponse,response_model=UserSchema,status_code=202,dependencies=[Depends(users_crud.check_admin)])
 
-async def update_user(id:int,todos:UserSchema,db=Depends(get_async_session)):
-    user=await users_crud.update_user(id,todos,db)
-    return user
+async def update_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
+    print(fullname)
+    fullname=fullname
+    email=email
+    username=username
+    password=password
+    is_active=is_active
+    admin=admin
+    ex_user_create={
+    "id":id,
+    "fullname":fullname,
+    "email":email,
+    "username":username,
+    "password":password,
+    "is_active":is_active,
+    "admin":admin,
+    
+}
+    async def update_user2(user:UserSchema,db=Depends(get_async_session)):
+      
+        user=await users_crud.update_user(user.id,user,db)
+        return user
+    output=await update_user2(UserSchema(**ex_user_create),db)
+    user=await users_crud.get_user_by_username(db,output.username)  
+    output = UserSchema.from_orm(user)
+    output=dict(output)
+    user_schema_list = list(output.values())
+    return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
 
-@router.delete("/{id}",status_code=200,dependencies=[Depends(users_crud.check_admin)])
+@router.post("/delete",response_class=templates.TemplateResponse,status_code=200,dependencies=[Depends(users_crud.check_admin)])
 
-async def delete_user(id:int,db=Depends(get_async_session)):
+async def delete_user(request: Request,id:int=Form(...),db=Depends(get_async_session)):
     user=await users_crud.delete_user(id,db)
-    return user
+    """ user=await users_crud.get_user_by_username(db,user.username)  
+    output = UserSchema.from_orm(user)
+    output=dict(output)
+    user_schema_list = list(output.values())"""
+    user=[id]
+    context={"request":request,"user":user}
+    return templates.TemplateResponse("display_delete.html",context=context)
+
+@router.post("/update_me",response_class=templates.TemplateResponse,response_model=UserSchema,status_code=202,)
+
+async def update_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
+    print(password)
+  
+    ex_user_create={
+    "id":id,
+    "fullname":fullname,
+    "email":email,
+    "username":username,
+    "password":password,
+    "is_active":is_active,
+    "admin":admin,
+    
+}
+    async def update_user2(user:UserSchemaCreate,db=Depends(get_async_session)):
+        print(user.username)
+        username=await users_crud.get_saved_username()
+        username1=await users_crud.get_user_by_username(db,username) 
+        print(username1.hashed_password)
+        user=await users_crud.update_user_me(username1.id,user,db)
+        return user
+    output=await update_user2(UserSchemaCreate(**ex_user_create),db)
+    user=await users_crud.get_user_by_username(db,output.username)  
+    output = UserSchema.from_orm(user)
+    output=dict(output)
+    user_schema_list = list(output.values())
+    return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
+   

@@ -1,12 +1,15 @@
-from fastapi import FastAPI,Request,status
+from fastapi import FastAPI,Request,status,Depends
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
 #from fastapi import APIRouter as api_router
 from test_app import settings
+from test_app.core.db import get_async_session
 from test_app.core.models import HealthCheck
 from test_app.router.endpoints import api_router
 from fastapi.staticfiles import StaticFiles
+from test_app.users import crud as users_crud
+from test_app.todos import crud as todos_crud
 templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
 fastapi_app = FastAPI(
     title=settings.project_name,
@@ -45,6 +48,59 @@ async def get_user(request:Request):
     #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("create_user.html",context=context)
 
+@fastapi_app.get("/userupdate", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,id:int,db=Depends(get_async_session)):
+    user_by_id=await users_crud.get_user_by_id(id,db)
+    print(user_by_id)
+    context={"request":request,"user":user_by_id}
+    
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("update_user.html",context=context)
+
+
+@fastapi_app.get("/userdelete", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,id:int,db=Depends(get_async_session)):
+    user_by_id=await users_crud.get_user_by_id(id,db)
+    print(user_by_id)
+    context={"request":request,"user":user_by_id}
+    
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("delete.html",context=context)
+
+@fastapi_app.get("/userupdateme", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,db=Depends(get_async_session)):
+    username=await users_crud.get_saved_username()
+    username1=await users_crud.get_user_by_username(db,username)
+    user_by_id=await users_crud.get_user_by_id(username1.id,db)
+    print(user_by_id.id)
+    context={"request":request,"user":user_by_id}
+    
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("update_user_me.html",context=context)
+
+@fastapi_app.get("/update_my_todo", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,db=Depends(get_async_session)):
+    username=await users_crud.get_saved_username()
+    username1=await users_crud.get_user_by_username(db,username)
+    todos=await todos_crud.get_todosid_by_ownerid(username1.id,db)
+    todos=await todos_crud.get_todos_by_id(todos,db)
+    context={"request":request,"user":todos}
+    
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("update_todos_me.html",context=context)
+
+@fastapi_app.get("/todocreate", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request):
+    context={"request":request}
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("create_todo.html",context=context)
+
+
 
 
 
@@ -65,4 +121,5 @@ async def health_check():
         "version":settings.version,
         "description":settings.description
     }    
+    
 
