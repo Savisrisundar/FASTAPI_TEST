@@ -7,28 +7,30 @@
 <body>
   <h1>Give the Details</h1>
   
-  <form action="/api/v1/todos/update_me/" method="post">
+  
     <div class="mb-3">
         <label>TaskName</label>
-        <input type="text"  name="task_name" placeholder="task_name" class="form-control" value="{{user.task_name}}" />
+        <input type="text"  name="task_name" placeholder="task_name" class="form-control" value="{{user.task_name}}" readonly/>
     </div>
     
     <div class="mb-3">
         <label>Description</label>
-        <input type="text" name="description" placeholder="description" class="form-control" value="{{user.description}}"/>
+        <input type="text" name="description" placeholder="description" class="form-control" value="{{user.description}}"readonly/>
     </div>
     <div class="mb-3">
         <label>Duration</label>
-        <input type="number" name="duration" placeholder="duration" class="form-control" value="{{user.duration}}"/>
+        <input type="number" name="duration" placeholder="duration" class="form-control" value="{{user.duration}}"readonly/>
     </div>
     <div class="mb-3">
         <label>Status</label>
-        <input type="text" name="status" placeholder="status" class="form-control" value="{{user.status}}"/>
+        <input type="text" name="status" placeholder="status" class="form-control" value="{{user.status}}"readonly/>
     </div>
     <div class="mb-3">
         <label>id</label>
         <input type="number" name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/>
     </div>
+
+  <form action="/api/v1/todos/delete_my_todo/" method="post">
     <div class="mb-3">
         <label>owner_id</label>
         

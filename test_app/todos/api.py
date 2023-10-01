@@ -22,19 +22,32 @@ async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
     return templates.TemplateResponse("display_todos.html",{"request":request,"users": todo_schema_list})
     
     
-@router.post("/me}",response_model=todosSchema,status_code=201,)
+@router.post("/create_my_todo",response_class=templates.TemplateResponse,response_model=todosSchema,status_code=201)
 
-async def create_todos(username:str,password:str,todos:todosSchemaCreate,db=Depends(get_async_session)):
-    db_user=await users_crud.get_password(db,username)
+async def create_todos(request:Request,task_name:str=Form(...),description:str=Form(...),duration:int=Form(...),status:str=Form(...),owner_id:int=Form(...),db=Depends(get_async_session)):
+    ex_todos_read={
     
-    db_user1=await users_crud.verify_password(password,db_user)
-    if(db_user1 is True):
-        todos=await todos_crud.create_todos(db,todos)
+    "task_name":task_name,
+    "description":description,
+    "duration":duration,
+    "status":status,
+    "id":4,
+    "owner_id":owner_id,
+     }
+    
+    async def update_user2(todo1:todosSchemaCreate,db=Depends(get_async_session)):
+      
+        
+        todos=await todos_crud.create_todos(db,todo1)
+        #user=await users_crud.update_user_me(username1.id,user,db)
         return todos
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="unauthorized",)
+    output=await update_user2(todosSchemaCreate(**ex_todos_read),db)
+    #user=await todos_crud.get_todosid_by_ownerid(output.owner_id,db)  
+    output = todosSchema.from_orm(output)
+    output=dict(output)
+    print(output)
+    user_schema_list = list(output.values())
+    return templates.TemplateResponse("display_todos.html",{"request":request,"users": user_schema_list})
     
     
 
@@ -67,9 +80,12 @@ async def update_todos(request:Request,task_name:str=Form(...),description:str=F
     todos=await todos_crud.update_todos(todos1,todos,db)
     return todos"""
     
-@router.delete("/{owner_id}",status_code=200)
+@router.post("/delete_my_todo",response_class=templates.TemplateResponse,status_code=200)
 
-async def delete_todos(id:int,db=Depends(get_async_session)):
-    todos1=await todos_crud.get_todosid_by_ownerid(id,db)
+async def delete_todos(request:Request,owner_id:int=Form(...),db=Depends(get_async_session)):
+    todos1=await todos_crud.get_todosid_by_ownerid(owner_id,db)
     todo=await todos_crud.delete_todos(todos1,db)
-    return todo
+    user=[owner_id]
+    context={"request":request,"user":user}
+    return templates.TemplateResponse("display_delete.html",context=context)
+    

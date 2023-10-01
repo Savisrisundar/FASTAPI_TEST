@@ -95,10 +95,26 @@ async def get_user(request:Request,db=Depends(get_async_session)):
 
 @fastapi_app.get("/todocreate", response_class=templates.TemplateResponse)
 
-async def get_user(request:Request):
-    context={"request":request}
+async def get_user(request:Request,db=Depends(get_async_session)):
+    db_user1=await users_crud.get_saved_username()
+    db_user=await users_crud.get_user_by_username(db,db_user1)
+    user=[db_user.id]
+    context={"request":request,"users":user}
     #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("create_todo.html",context=context)
+
+@fastapi_app.get("/tododelete", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,db=Depends(get_async_session)):
+    username=await users_crud.get_saved_username()
+    username1=await users_crud.get_user_by_username(db,username)
+    
+    todos=await todos_crud.get_todosid_by_ownerid(username1.id,db)
+    todos=await todos_crud.get_todos_by_id(todos,db)
+    context={"request":request,"user":todos}
+    
+    #access_token = request.cookies.get("access_token")
+    return templates.TemplateResponse("delete_todo.html",context=context)
 
 
 
