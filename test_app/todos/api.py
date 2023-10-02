@@ -25,6 +25,8 @@ async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
 @router.post("/create_my_todo",response_class=templates.TemplateResponse,response_model=todosSchema,status_code=201)
 
 async def create_todos(request:Request,task_name:str=Form(...),description:str=Form(...),duration:int=Form(...),status:str=Form(...),owner_id:int=Form(...),db=Depends(get_async_session)):
+    check=await todos_crud.check_for_todo(owner_id,db)
+    
     ex_todos_read={
     
     "task_name":task_name,

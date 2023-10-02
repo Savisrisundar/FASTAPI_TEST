@@ -21,6 +21,17 @@ async def get_todosid_by_ownerid(id:int,db:AsyncSession):
             detail="no todos for this user",)
     
     return todo.id
+async def check_for_todo(id:int,db:AsyncSession):
+    statement=select(Todos).where(Todos.owner_id==id)
+    result=await db.execute(statement)
+    todo=result.scalars().one_or_none()
+    
+    if todo is not None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="todos for this user already existing",)
+    else :
+        return True
         
 
 async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
