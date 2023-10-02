@@ -5,38 +5,53 @@
   <title>Users</title>
 </head>
 <body>
-  <h1>My Details</h1>
-  
-  <form action="/api/v1/users/me/" method="get">
-    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
-  </form>
-
-  <h1>Update My Details</h1>
-  <form action="/userupdateme" method="get">
-  
-    <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-  </form>
+  <div class="row">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">My Details</h1>
+      <form action="/api/v1/users/me/" method="get">
+        <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div class="col-6">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Update My Details</h1>
+      <form action="/userupdateme" method="get">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div class="col-6">
+  </div class="row">
 </body>
-<h1>Get Todos</h1>
+<br><div class="row">
+  <div class="col-6">
+<h1 style="font-size: 2rem;">Get Todos</h1>
   
 <form action="/api/v1/todos/id/" method="get">
   <input type="number" name="id" placeholder="id">
-  <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
+  <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
 </form>
-<h1>Create My Todos</h1>
+</div class="col-6">
+<div class="col-6">
+<h1 style="font-size: 2rem;">Create My Todos</h1>
 <form action="/todocreate" method="get">
-  <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
+  <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
 </form>
-<h1>Update My Todos</h1>
+</div class="col-6">
+</div class="row"></br>
+<br><div class="row">
+  <div class="col-6">
+<h1 style="font-size: 2rem;">Update My Todos</h1>
 <form action="/update_my_todo" method="get">
   
-  <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
+  <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
 </form>
-<h1>Delete My Todos</h1>
+</div class="col-6">
+<div class="col-6">
+<h1 style="font-size: 2rem;">Delete My Todos</h1>
 <form action="/tododelete" method="get">
   
-  <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
+  <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
 </form>
+</div class="col-6">
+</div class="row"></br>
 {% if error_msg %}
   <div class="alert alert-danger">
     {{ error_msg }}

@@ -5,11 +5,11 @@
   <title>Login</title>
 </head>
 <body>
-  <h1>Login</h1>
+  <center><h1>Login</h1></center>
   <form action="/api/v1/users/token/" method="post">
-    <input type="text" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Password">
-    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
+    <center><input type="text" name="username" placeholder="Username"></center>
+    <br><center><input type="password" name="password" placeholder="Password"></center></br>
+    <center><input type = "submit" value = "Submit" class="btn btn-primary mb-1"/></center>
   
   </form>
   {% if error_msg %}

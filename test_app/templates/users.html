@@ -1,65 +1,94 @@
 {% extends "base.html" %}
 
 {%block content%}
-<head>
-  <title>Users</title>
-</head>
+
 <body>
-  <h1>Users</h1>
   
-  <form action="/api/v1/users/username/" method="get">
-    <input type="text" name="username" placeholder="Username">
-    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
-  </form>
-  <h1>My Details</h1>
-  
-  <form action="/api/v1/users/me/" method="get">
-    <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
-  </form>
-  <h1>Create Users</h1>
-  <form action="/usercreate" method="get">
-    <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-  </form>
-  <h1>Update Users</h1>
-  <form action="/userupdate" method="get">
-    <input type="number" name="id" placeholder="id">
-    <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-  </form>
-  <h1>Delete Users</h1>
-  <form action="/userdelete" method="get">
-    <input type="number" name="id" placeholder="id">
-    <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-  </form>
-  <h1>Update My Details</h1>
-  <form action="/userupdateme" method="get">
-    
-    <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-  </form>
-  <h1>Get Todos</h1>
-  
-<form action="/api/v1/todos/id/" method="get">
-  <input type="number" name="id" placeholder="id">
-  <input type = "submit" value = "Submit" class="btn btn-primary mb-3"/>
-</form>
-<h1>Create My Todos</h1>
-<form action="/todocreate" method="get">
-  <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-</form>
-<h1>Update My Todos</h1>
-<form action="/update_my_todo" method="get">
-  
-  <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-</form>
-<h1>Delete My Todos</h1>
-<form action="/tododelete" method="get">
-  
-  <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
-</form>
-{% if error_msg %}
-  <div class="alert alert-danger">
-    {{ error_msg }}
+
+  <div class="row">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Users</h1>
+      <form action="/api/v1/users/username/" method="get">
+        <input type="text" name="username" placeholder="Username">
+        <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">My Details</h1>
+      <form action="/api/v1/users/me/" method="get">
+        <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
   </div>
-{% endif %}
+
+ <br> <div class="row">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Create Users</h1>
+      <form action="/usercreate" method="get">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Update Users</h1>
+      <form action="/userupdate" method="get">
+        <input type="number" name="id" placeholder="id">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+  </div></br>
+
+  <br><div class="row">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Delete Users</h1>
+      <form action="/userdelete" method="get">
+        <input type="number" name="id" placeholder="id">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Update My Details</h1>
+      <form action="/userupdateme" method="get">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+  </div></br>
+
+  <br><div class="row">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Get Todos</h1>
+      <form action="/api/v1/todos/id/" method="get">
+        <input type="number" name="id" placeholder="id">
+        <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Create My Todos</h1>
+      <form action="/todocreate" method="get">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+  </div></br>
+
+  <br><div class="row">
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Update My Todos</h1>
+      <form action="/update_my_todo" method="get">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+    <div class="col-6">
+      <h1 style="font-size: 2rem;">Delete My Todos</h1>
+      <form action="/tododelete" method="get">
+        <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
+      </form>
+    </div>
+  </div></br>
+
+  {% if error_msg %}
+    <div class="alert alert-danger">
+      {{ error_msg }}
+    </div>
+  {% endif %}
 
 </body>
 
