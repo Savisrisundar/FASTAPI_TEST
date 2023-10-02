@@ -23,13 +23,12 @@ async def get_user_by_username(db:AsyncSession,username:str):
     result= await db.execute(statement)
     user=result.scalars().one_or_none()
     if user is None:
-        print("None")
+        raise HTTPException(status_code=404, detail="User not found")
     print("users are:",user)
     return user
     
 
 async def get_password(db,username):
-    
     user = await get_user_by_username(db, username)
     if user is None:
         raise HTTPException(
@@ -40,9 +39,6 @@ async def get_password(db,username):
     
 
 async def verify_password(password:str, hashed_password:str):
-    """Verifies a password against a hashed password."""
-    #return pwd_context.verify(password, hashed_password)
-    
     if(password==hashed_password):
         return True
     else:
@@ -78,55 +74,40 @@ async def create_user(db:AsyncSession, user:UserSchemaCreate):
     await db.commit()
     await db.refresh(db_user)
     return db_user
+
 async def update_user(id:int,user:UserSchema,db:AsyncSession):
-    
-    
     user_in_db = await db.get(User, id)
     if not user_in_db:
         raise HTTPException(status_code=404, detail="Todo not found")
-    
     user_in_db.fullname = user.fullname
     user_in_db.username = user.username
     user_in_db.email=user.email
-    #user_in_db.hashed_password=user.password
     user_in_db.is_active=user.is_active
     user_in_db.admin=user.admin
-    print(user_in_db.hashed_password)
-    
-    
-
     await db.commit()
-
     return user_in_db
 
 async def update_user_me(id:int,user:UserSchemaCreate,db:AsyncSession):
-    
-    
     user_in_db = await db.get(User, id)
     if not user_in_db:
-        raise HTTPException(status_code=404, detail="Todo not found")
-    
+        raise HTTPException(status_code=404, detail="User not found")
     user_in_db.fullname = user.fullname
     user_in_db.username = user.username
     user_in_db.email=user.email
     user_in_db.hashed_password=user.password
     user_in_db.is_active=user.is_active
     user_in_db.admin=user.admin
-    print(user_in_db.hashed_password)
     await db.commit()
-
     return user_in_db
 
 async def delete_user(id:int,db:AsyncSession):
-    
     user = await db.get(User, id)
     if not user:
-        raise HTTPException(status_code=404, detail="Todo not found")
-
+        raise HTTPException(status_code=404, detail="User not found")
     await db.delete(user)
     await db.commit()
-
     return user
+
 async def save_token(token:str):
     global token_val
     token_val=token
@@ -148,7 +129,6 @@ async def get_saved_username():
     return string
 
 async def get_user_by_id(id:int,db:AsyncSession):
-    
     todo = await db.get(User, id)
     return todo
 
@@ -164,7 +144,6 @@ async def verify_token(token):
 async def check_active(token:str=Depends(get_saved_token)):
     payload=await verify_token(token)
     print("payload:",payload)
-    
     async def get_payload(payload):
         return dict(payload)
     payload = await get_payload(payload)
@@ -184,14 +163,9 @@ async def check_admin(payload: bool = Depends(check_active)):
     print("payload", payload)
     return payload
 
-
-
-    
-
 async def check_active_user(token:str=Depends(oauth2_scheme)):
     payload=await verify_token(token)
     username=payload.get("username")
-    
     users1=await save_username(username)
     return users1
         

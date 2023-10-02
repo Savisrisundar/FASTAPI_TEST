@@ -1,8 +1,7 @@
-from fastapi import FastAPI,Request,status,Depends
+from fastapi import FastAPI,Request,status,Depends,HTTPException
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import RedirectResponse
-#from fastapi import APIRouter as api_router
 from test_app import settings
 from test_app.core.db import get_async_session
 from test_app.core.models import HealthCheck
@@ -17,9 +16,8 @@ fastapi_app = FastAPI(
     openapi_url=f"{settings.api_v1_prefix}/openapi.json",
     debug=settings.debug,
     templates="templates",
-    #security={},
+    
 )
-#fastapi_app.mount("/static",StaticFiles(directory="static"),name="static")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
 
@@ -29,33 +27,29 @@ async def home(request:Request):
 
 @fastapi_app.get("/login", response_class=templates.TemplateResponse)
 async def login_form(request: Request):
-  #context={"request":request.cookies.get("access_token")}
   context = {"request": request}
   return templates.TemplateResponse("login.html",context=context)
-  #return RedirectResponse(url=fastapi_app.url_path_for("get_user"),status_code=status.HTTP_303_SEE_OTHER)
 
 @fastapi_app.get("/user", response_class=templates.TemplateResponse)
 
 async def get_user(request:Request):
     context={"request":request}
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("users.html",context=context)
 
 @fastapi_app.get("/usercreate", response_class=templates.TemplateResponse)
 
 async def get_user(request:Request):
     context={"request":request}
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("create_user.html",context=context)
 
 @fastapi_app.get("/userupdate", response_class=templates.TemplateResponse)
 
 async def get_user(request:Request,id:int,db=Depends(get_async_session)):
     user_by_id=await users_crud.get_user_by_id(id,db)
+    if user_by_id.admin is True:
+        raise HTTPException(status_code=404, detail="You can not change another Admin's details")
     print(user_by_id)
     context={"request":request,"user":user_by_id}
-    
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("update_user.html",context=context)
 
 
@@ -65,8 +59,6 @@ async def get_user(request:Request,id:int,db=Depends(get_async_session)):
     user_by_id=await users_crud.get_user_by_id(id,db)
     print(user_by_id)
     context={"request":request,"user":user_by_id}
-    
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("delete.html",context=context)
 
 @fastapi_app.get("/userupdateme", response_class=templates.TemplateResponse)
@@ -77,8 +69,6 @@ async def get_user(request:Request,db=Depends(get_async_session)):
     user_by_id=await users_crud.get_user_by_id(username1.id,db)
     print(user_by_id.id)
     context={"request":request,"user":user_by_id}
-    
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("update_user_me.html",context=context)
 
 @fastapi_app.get("/update_my_todo", response_class=templates.TemplateResponse)
@@ -89,8 +79,6 @@ async def get_user(request:Request,db=Depends(get_async_session)):
     todos=await todos_crud.get_todosid_by_ownerid(username1.id,db)
     todos=await todos_crud.get_todos_by_id(todos,db)
     context={"request":request,"user":todos}
-    
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("update_todos_me.html",context=context)
 
 @fastapi_app.get("/todocreate", response_class=templates.TemplateResponse)
@@ -100,7 +88,6 @@ async def get_user(request:Request,db=Depends(get_async_session)):
     db_user=await users_crud.get_user_by_username(db,db_user1)
     user=[db_user.id]
     context={"request":request,"users":user}
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("create_todo.html",context=context)
 
 @fastapi_app.get("/tododelete", response_class=templates.TemplateResponse)
@@ -108,12 +95,9 @@ async def get_user(request:Request,db=Depends(get_async_session)):
 async def get_user(request:Request,db=Depends(get_async_session)):
     username=await users_crud.get_saved_username()
     username1=await users_crud.get_user_by_username(db,username)
-    
     todos=await todos_crud.get_todosid_by_ownerid(username1.id,db)
     todos=await todos_crud.get_todos_by_id(todos,db)
     context={"request":request,"user":todos}
-    
-    #access_token = request.cookies.get("access_token")
     return templates.TemplateResponse("delete_todo.html",context=context)
 
 

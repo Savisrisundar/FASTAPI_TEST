@@ -18,7 +18,6 @@ async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
     todo_schema=dict(todo_schema)
     todo_schema_list = list(todo_schema.values())
     print(todo_schema_list)
-    #return username1
     return templates.TemplateResponse("display_todos.html",{"request":request,"users": todo_schema_list})
     
     
@@ -26,9 +25,7 @@ async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
 
 async def create_todos(request:Request,task_name:str=Form(...),description:str=Form(...),duration:int=Form(...),status:str=Form(...),owner_id:int=Form(...),db=Depends(get_async_session)):
     check=await todos_crud.check_for_todo(owner_id,db)
-    
     ex_todos_read={
-    
     "task_name":task_name,
     "description":description,
     "duration":duration,
@@ -38,19 +35,14 @@ async def create_todos(request:Request,task_name:str=Form(...),description:str=F
      }
     
     async def update_user2(todo1:todosSchemaCreate,db=Depends(get_async_session)):
-      
-        
         todos=await todos_crud.create_todos(db,todo1)
-        #user=await users_crud.update_user_me(username1.id,user,db)
         return todos
-    output=await update_user2(todosSchemaCreate(**ex_todos_read),db)
-    #user=await todos_crud.get_todosid_by_ownerid(output.owner_id,db)  
+    output=await update_user2(todosSchemaCreate(**ex_todos_read),db) 
     output = todosSchema.from_orm(output)
     output=dict(output)
     print(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_todos.html",{"request":request,"users": user_schema_list})
-    
     
 
 @router.post("/update_me",response_class=templates.TemplateResponse,response_model=todosSchema,status_code=202)
@@ -65,12 +57,12 @@ async def update_todos(request:Request,task_name:str=Form(...),description:str=F
     "status":status,
     "owner_id":owner_id,
      }
+    
     async def update_user2(todo1:todosSchema,db=Depends(get_async_session)):
         username=await users_crud.get_saved_username()
         username1=await users_crud.get_user_by_username(db,username)
         todos1=await todos_crud.get_todosid_by_ownerid(username1.id,db)
         todos=await todos_crud.update_todos(todos1,todo1,db) 
-        #user=await users_crud.update_user_me(username1.id,user,db)
         return todos
     output=await update_user2(todosSchema(**ex_todos_read),db)
     user=await todos_crud.get_todosid_by_ownerid(output.owner_id,db)  
@@ -78,9 +70,6 @@ async def update_todos(request:Request,task_name:str=Form(...),description:str=F
     output=dict(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_todos.html",{"request":request,"users": user_schema_list})
-    """todos1=await todos_crud.get_todosid_by_ownerid(id,db)
-    todos=await todos_crud.update_todos(todos1,todos,db)
-    return todos"""
     
 @router.post("/delete_my_todo",response_class=templates.TemplateResponse,status_code=200)
 

@@ -42,37 +42,28 @@ async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
     return db_todo
 
 async def get_todos_by_id(id:int,db:AsyncSession):
-    
     todo = await db.get(Todos, id)
     return todo
     
-
-
 async def update_todos(id:int,todo:todosSchema,db:AsyncSession):
     todo_in_db = await db.get(Todos, id)
     if not todo_in_db:
         raise HTTPException(status_code=404, detail="Todo not found")
-
     todo_in_db.task_name = todo.task_name
     todo_in_db.status = todo.status
     todo_in_db.description=todo.description
     todo_in_db.duration=todo.duration
     print(todo_in_db.description)
-
     await db.commit()
-
     return todo_in_db
 
 
 async def delete_todos(id:int,db:AsyncSession):
-    
     todo = await db.get(Todos, id)
     if not todo:
         raise HTTPException(status_code=404, detail="Todo not found")
-
     await db.delete(todo)
     await db.commit()
-
     return todo
     
     
