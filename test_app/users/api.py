@@ -41,7 +41,13 @@ async def get_me(request:Request,db=Depends(get_async_session)):
 async def get_user(request:Request,username:str,db=Depends(get_async_session)):
     print("Your details")   
     print(username) 
-    user=await users_crud.get_user_by_username(db,username)    
+    user=await users_crud.get_user_by_username(db,username)  
+    error_msg=None
+    if user is None:
+        error_msg="This username not found"  
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("users.html", context=context)
     print("username:",user.username)
     
     user_schema = UserSchema.from_orm(user)
@@ -81,13 +87,22 @@ async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...)
 async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends(),db=Depends(get_async_session)):
     db_user =await users_crud.get_user_by_username(db,form_data.username)
     print(db_user)
+    error_msg=None
     if db_user is None:
-        raise HTTPException(
-        status_code=401, detail="This username not found"
-    )
+        error_msg="This username not found"
+        """raise HTTPException(
+        status_code=401, detail="This username not found
+    )"""
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("login.html", context=context)
     db_user2 =await users_crud.verify_password(form_data.password,db_user.hashed_password)
     if db_user2 is False:
-        raise HTTPException(status_code=401, detail="password not matched")
+        error_msg="This Password is not matching"
+        #raise HTTPException(status_code=401, detail="password not matched")
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("login.html", context=context)
 
     payload = {"username": db_user.username, "role_is_admin:": db_user.admin}
     token = jwt.encode(payload, JWT_SECRET, algorithm=ALGORITHM)

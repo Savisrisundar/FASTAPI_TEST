@@ -37,5 +37,10 @@
   
   <input type="submit" value="Submit" class="btn btn-primary mb-3"/>
 </form>
+{% if error_msg %}
+  <div class="alert alert-danger">
+    {{ error_msg }}
+  </div>
+  {% endif %}
 
 {% endblock content%}

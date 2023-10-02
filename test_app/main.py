@@ -46,8 +46,18 @@ async def get_user(request:Request):
 
 async def get_user(request:Request,id:int,db=Depends(get_async_session)):
     user_by_id=await users_crud.get_user_by_id(id,db)
+    error_msg=None
+    if user_by_id is None:
+        error_msg="This id was not found"  
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("users.html", context=context)
     if user_by_id.admin is True:
-        raise HTTPException(status_code=404, detail="You can not change another Admin's details")
+        error_msg="You can not change another Admin's details"
+        #raise HTTPException(status_code=404, detail="You can not change another Admin's details")
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("users.html", context=context)
     print(user_by_id)
     context={"request":request,"user":user_by_id}
     return templates.TemplateResponse("update_user.html",context=context)
@@ -57,6 +67,11 @@ async def get_user(request:Request,id:int,db=Depends(get_async_session)):
 
 async def get_user(request:Request,id:int,db=Depends(get_async_session)):
     user_by_id=await users_crud.get_user_by_id(id,db)
+    if user_by_id is None:
+        error_msg="This id was not found"  
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("users.html", context=context)
     print(user_by_id)
     context={"request":request,"user":user_by_id}
     return templates.TemplateResponse("delete.html",context=context)
@@ -86,6 +101,14 @@ async def get_user(request:Request,db=Depends(get_async_session)):
 async def get_user(request:Request,db=Depends(get_async_session)):
     db_user1=await users_crud.get_saved_username()
     db_user=await users_crud.get_user_by_username(db,db_user1)
+    todos=await todos_crud.get_todosid_by_ownerid(db_user.id,db)
+    todos=await todos_crud.get_todos_by_id(todos,db)
+    error_msg=None
+    if todos :
+        error_msg="You Already have a todo to do, delete it to create another"  
+    if error_msg:
+        context={"request":request,"error_msg": error_msg}
+        return templates.TemplateResponse("users.html", context=context)
     user=[db_user.id]
     context={"request":request,"users":user}
     return templates.TemplateResponse("create_todo.html",context=context)

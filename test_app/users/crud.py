@@ -2,6 +2,7 @@ from sqlalchemy import select
 from test_app.core.db import get_async_session
 from fastapi import Depends,HTTPException,status
 import bcrypt
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from test_app.users.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,7 +11,7 @@ from passlib.context import CryptContext
 import jwt
 from fastapi.security import OAuth2PasswordBearer
 from test_app.users import api
-
+templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
 JWT_SECRET="savi"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -22,8 +23,8 @@ async def get_user_by_username(db:AsyncSession,username:str):
     statement = select(User).where(User.username==username)
     result= await db.execute(statement)
     user=result.scalars().one_or_none()
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
+    """if user is None:
+        raise HTTPException(status_code=404, detail="User not found")"""
     print("users are:",user)
     return user
     
