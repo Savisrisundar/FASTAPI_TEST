@@ -39,8 +39,6 @@ async def get_me(request:Request,db=Depends(get_async_session)):
 @router.get("/username",response_model=UserSchema|None|dict, status_code=200,dependencies=[Depends(users_crud.check_admin)])
 
 async def get_user(request:Request,username:str,db=Depends(get_async_session)):
-    print("Your details")   
-    print(username) 
     user=await users_crud.get_user_by_username(db,username)  
     error_msg=None
     if user is None:
@@ -48,19 +46,16 @@ async def get_user(request:Request,username:str,db=Depends(get_async_session)):
     if error_msg:
         context={"request":request,"error_msg": error_msg}
         return templates.TemplateResponse("users.html", context=context)
-    print("username:",user.username)
-    
     user_schema = UserSchema.from_orm(user)
     user_schema=dict(user_schema)
     user_schema_list = list(user_schema.values())
-    print(user_schema)
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
 
 
 @router.post("/create",response_class=templates.TemplateResponse,response_model=UserSchema, status_code=201,dependencies=[Depends(users_crud.check_admin)])
 
 async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
-    print(fullname)
+    
     ex_user_create={
     "fullname":fullname,
     "email":email,
@@ -81,6 +76,7 @@ async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...)
     output=dict(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
+
     
     
 @router.post("/token",response_model=Token,response_class=templates.TemplateResponse)
@@ -90,16 +86,15 @@ async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends
     error_msg=None
     if db_user is None:
         error_msg="This username not found"
-        """raise HTTPException(
-        status_code=401, detail="This username not found
-    )"""
+     
     if error_msg:
         context={"request":request,"error_msg": error_msg}
         return templates.TemplateResponse("login.html", context=context)
+    
     db_user2 =await users_crud.verify_password(form_data.password,db_user.hashed_password)
     if db_user2 is False:
         error_msg="This Password is not matching"
-        #raise HTTPException(status_code=401, detail="password not matched")
+        
     if error_msg:
         context={"request":request,"error_msg": error_msg}
         return templates.TemplateResponse("login.html", context=context)
@@ -119,7 +114,7 @@ async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends
 @router.post("/update",response_class=templates.TemplateResponse,response_model=UserSchema,status_code=202,dependencies=[Depends(users_crud.check_admin)])
 
 async def update_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
-    print(fullname)
+    
     ex_user_create={
     "id":id,
     "fullname":fullname,
@@ -151,7 +146,7 @@ async def delete_user(request: Request,id:int=Form(...),db=Depends(get_async_ses
 @router.post("/update_me",response_class=templates.TemplateResponse,response_model=UserSchema,status_code=202,)
 
 async def update_user(request:Request,id:int=Form(...),fullname:str=Form(...),email:str=Form(...),username:str=Form(...),password:str=Form(...),is_active:str=Form(...),admin:str=Form(...),db=Depends(get_async_session)):
-    print(password)
+    
     ex_user_create={
     "id":id,
     "fullname":fullname,
