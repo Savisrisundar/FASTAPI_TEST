@@ -12,8 +12,20 @@ router=APIRouter()
 
 async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
     print(id)
+    db_user1=await users_crud.get_saved_username()
+    db_user=await users_crud.get_user_by_username(db,db_user1)
     todos1=await todos_crud.get_todosid_by_ownerid(id,db)
     todos=await todos_crud.get_todos_by_id(todos1,db)
+    error_msg=None
+    if todos is None:
+        error_msg="No todos for this user"
+    if error_msg:
+        if error_msg:
+            context={"request":request,"error_msg": error_msg}
+        if db_user.admin is True:
+            return templates.TemplateResponse("users.html",context=context)
+        else:
+            return templates.TemplateResponse("users_not_admin.html",context=context)
     todo_schema = todosSchema.from_orm(todos)
     todo_schema=dict(todo_schema)
     todo_schema_list = list(todo_schema.values())

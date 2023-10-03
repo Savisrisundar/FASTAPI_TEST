@@ -108,7 +108,10 @@ async def get_user(request:Request,db=Depends(get_async_session)):
         error_msg="You Already have a todo to do, delete it to create another"  
     if error_msg:
         context={"request":request,"error_msg": error_msg}
-        return templates.TemplateResponse("users.html", context=context)
+        if db_user.admin is True:
+            return templates.TemplateResponse("users.html",context=context)
+        else:
+            return templates.TemplateResponse("users_not_admin.html",context=context)
     user=[db_user.id]
     context={"request":request,"users":user}
     return templates.TemplateResponse("create_todo.html",context=context)

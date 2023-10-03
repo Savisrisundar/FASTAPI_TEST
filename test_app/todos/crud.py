@@ -16,11 +16,11 @@ async def get_todosid_by_ownerid(id:int,db:AsyncSession):
     todo=result.scalars().one_or_none()
     
     if todo is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="no todos for this user",)
+        todos=None
+    else:
+        todos=todo.id
     
-    return todo.id
+    return todos
 async def check_for_todo(id:int,db:AsyncSession):
     statement=select(Todos).where(Todos.owner_id==id)
     result=await db.execute(statement)

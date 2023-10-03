@@ -6,46 +6,48 @@
   
 
   <div class="row">
-    <div class="col-6">
-      <h1 style="font-size: 2rem;">Users</h1>
+    <div class="col-4">
+      <h1 style="font-size: 2rem; " >Users</h1>
       <form action="/api/v1/users/username/" method="get">
         <input type="text" name="username" placeholder="Username">
-        <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
+        <input type = "submit" value = "Submit" class="btn btn-primary btn-grey mb-1"/>
       </form>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <h1 style="font-size: 2rem;">My Details</h1>
       <form action="/api/v1/users/me/" method="get">
         <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-  </div>
+  
 
- <br> <div class="row">
-    <div class="col-6">
+ 
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Create Users</h1>
       <form action="/usercreate" method="get">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-    <div class="col-6">
+  </div>
+  <br><div class="row">
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Update Users</h1>
       <form action="/userupdate" method="get">
         <input type="number" name="id" placeholder="id">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-  </div></br>
+  
 
-  <br><div class="row">
-    <div class="col-6">
+  
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Delete Users</h1>
       <form action="/userdelete" method="get">
         <input type="number" name="id" placeholder="id">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Update My Details</h1>
       <form action="/userupdateme" method="get">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
@@ -54,29 +56,31 @@
   </div></br>
 
   <br><div class="row">
-    <div class="col-6">
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Get Todos</h1>
       <form action="/api/v1/todos/id/" method="get">
         <input type="number" name="id" placeholder="id">
         <input type = "submit" value = "Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Create My Todos</h1>
       <form action="/todocreate" method="get">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-  </div></br>
+  
 
-  <br><div class="row">
-    <div class="col-6">
+  
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Update My Todos</h1>
       <form action="/update_my_todo" method="get">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
       </form>
     </div>
-    <div class="col-6">
+  </div></br>
+  <br><div class="row">
+    <div class="col-4">
       <h1 style="font-size: 2rem;">Delete My Todos</h1>
       <form action="/tododelete" method="get">
         <input type="submit" value="Submit" class="btn btn-primary mb-1"/>
