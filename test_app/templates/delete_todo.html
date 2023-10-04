@@ -7,40 +7,48 @@
 <body>
   <h1>Give the Details</h1>
   
-  
+  <table>
     <div class="mb-3">
-        <label>TaskName</label>
-        <input type="text"  name="task_name" placeholder="task_name" class="form-control" value="{{user.task_name}}" readonly/>
+      <tr><td>
+        <label>TaskName</label></td>
+        <td><input type="text"  name="task_name" placeholder="task_name" class="form-control" value="{{user.task_name}}" readonly/></td></tr>
     </div>
     
     <div class="mb-3">
-        <label>Description</label>
-        <input type="text" name="description" placeholder="description" class="form-control" value="{{user.description}}"readonly/>
+      <tr><td>
+       <label>Description</label></td>
+        <td><input type="text" name="description" placeholder="description" class="form-control" value="{{user.description}}"readonly/></td></tr>
     </div>
     <div class="mb-3">
-        <label>Duration</label>
-        <input type="number" name="duration" placeholder="duration" class="form-control" value="{{user.duration}}"readonly/>
+      <tr><td>
+        <label>Duration</label></td>
+      <td>  <input type="number" name="duration" placeholder="duration" class="form-control" value="{{user.duration}}"readonly/></td></tr>
     </div>
     <div class="mb-3">
-        <label>Status</label>
-        <input type="text" name="status" placeholder="status" class="form-control" value="{{user.status}}"readonly/>
+      <tr><td>
+        <label>Status</label></td>
+       <td> <input type="text" name="status" placeholder="status" class="form-control" value="{{user.status}}"readonly/></td></tr>
     </div>
     <div class="mb-3">
-        <label>id</label>
-        <input type="number" name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/>
+      <tr><td>
+        <label>id</label></td>
+        <td><input type="number" name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/></td></tr>
     </div>
-
+  
   <form action="/api/v1/todos/delete_my_todo/" method="post">
+    
     <div class="mb-3">
-        <label>owner_id</label>
+      <tr><td>
+        <label>owner_id</label></td>
         
-        <input type="number"  name="owner_id" placeholder="owner_id" class="form-control" value="{{user.owner_id}}" readonly/>
+       <td> <input type="number"  name="owner_id" placeholder="owner_id" class="form-control" value="{{user.owner_id}}" readonly/></td></tr>
   
         
     </div>
     
-    
+  </table>
     <input type = "submit" value = "Delete" class="btn btn-primary mb-1"/>
+  
   </form>
 </body>
 

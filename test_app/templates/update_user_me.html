@@ -8,39 +8,47 @@
   <h1>Give the Details</h1>
   
   <form action="/api/v1/users/update_me/" method="post">
+    <table>
     <div class="mb-3">
-        <label>id</label>
-        <input type="text"  name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/>
+      <tr> <td> <label>id</label></td>
+       <td> <input type="text"  name="id" placeholder="id" class="form-control" value="{{user.id}}" readonly/></td>
+      </tr>
     </div>
     
     <div class="mb-3">
-        <label>Fullname</label>
-        <input type="text" name="fullname" placeholder="FullName" class="form-control" value="{{user.fullname}}"/>
+      <tr> <td>  <label>Fullname</label></td>
+       <td> <input type="text" name="fullname" placeholder="FullName" class="form-control" value="{{user.fullname}}"/></td>
+      </tr>
     </div>
     <div class="mb-3">
-        <label>Email</label>
-        <input type="text" name="email" placeholder="Email" class="form-control" value="{{user.email}}"/>
+        <tr> <td> 
+        <label>Email</label></td>
+       <td> <input type="text" name="email" placeholder="Email" class="form-control" value="{{user.email}}"/></td> </tr> 
     </div>
     <div class="mb-3">
-        <label>Username</label>
-        <input type="text" name="username" placeholder="Username" class="form-control" value="{{user.username}}"/>
+        <tr> <td> 
+        <label>Username</label></td>
+       <td> <input type="text" name="username" placeholder="Username" class="form-control" value="{{user.username}}"/></td></tr>
     </div>
     <div class="mb-3">
-        <label>Password</label>
-        <input type="password" name="password" placeholder="Password" class="form-control" value="{{user.hashed_password}}"/>
+        <tr> <td> 
+        <label>Password</label></td>
+       <td> <input type="password" name="password" placeholder="Password" class="form-control" value="{{user.hashed_password}}"/></td>
     </div>
     <div class="mb-3">
-        <label for="is_active">is_active</label><br>
+        <tr> <td> 
+        <label for="is_active">is_active</label><br></td>
         
-        <input type="text"  name="is_active" placeholder="is_active" class="form-control" value="{{user.is_active}}" readonly/>
+       <td> <input type="text"  name="is_active" placeholder="is_active" class="form-control" value="{{user.is_active}}" readonly/></td></tr>
   
         
     </div>
     <div class="mb-3">
-        <label for="admin">admin</label><br>
-        <input type="text"  name="admin" placeholder="admin" class="form-control" value="{{user.admin}}" readonly/>
+        <tr> <td> 
+        <label for="admin">admin</label><br></td>
+        <td><input type="text"  name="admin" placeholder="admin" class="form-control" value="{{user.admin}}" readonly/></td></tr>
     </div>
-    
+</table>
     <input type = "submit" value = "Update" class="btn btn-primary mb-1"/>
   </form>
 </body>

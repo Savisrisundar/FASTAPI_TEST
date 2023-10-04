@@ -79,7 +79,7 @@ async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...)
 
     
     
-@router.post("/token",response_model=Token,response_class=templates.TemplateResponse)
+@router.post("/token",response_model=Token|None|UserSchema,response_class=templates.TemplateResponse)
 async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends(),db=Depends(get_async_session)):
     db_user =await users_crud.get_user_by_username(db,form_data.username)
     print(db_user)

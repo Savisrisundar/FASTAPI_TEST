@@ -48,18 +48,7 @@ async def get_user(request:Request,User:str,db=Depends(get_async_session)):
             return templates.TemplateResponse("users_not_admin_todo.html",context=context)
    
 
-@fastapi_app.get("/TODOS", response_class=templates.TemplateResponse)
 
-async def get_user(request:Request,db=Depends(get_async_session)):
-    username=await users_crud.get_saved_username()
-    username1=await users_crud.get_user_by_username(db,username)
-    is_admin=username1.admin
-    if is_admin is True:
-        context={"request":request}
-        return templates.TemplateResponse("users_todo.html",context=context)
-    else:
-        context={"request":request}
-        return templates.TemplateResponse("users_not_admin_todo.html",context=context)
 
 @fastapi_app.get("/login", response_class=templates.TemplateResponse)
 async def login_form(request: Request):
@@ -103,6 +92,7 @@ async def get_user(request:Request,id:int,db=Depends(get_async_session)):
 
 async def get_user(request:Request,id:int,db=Depends(get_async_session)):
     user_by_id=await users_crud.get_user_by_id(id,db)
+    error_msg=None
     if user_by_id is None:
         error_msg="This id was not found"  
     if error_msg:

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {%block content%}
-<h1>Check the attribute you want to get inside</h1>
+
 
 <head>
     <title>My HTML Page</title>
@@ -10,19 +10,18 @@
         width: 2rem;
         height: 2rem;
       }
-      input[value="User"]{
-        font-size: 2rem;
-      }
+   
     </style>
+  
   </head>
 <body>
 <form action="/USER" method="get">
-    <label style="font-size: 2rem;" for="Select">Select</label><br>
+    <label style="font-size: 3rem;" "font-weight: bold;" for="Select">Select</label><br>
    <br> <input type="radio" name="User" value="User">
-    <label>User</label></br>
+    <label style="font-size: 2rem;">User</label></br>
    <br> <input type="radio" name="User" value="Todo">
-    <label>Todo</label><br>
-   <br> <input type = "submit" value = "Go" class="btn btn-primary mb-1"/></br>
+    <label style="font-size: 2rem;">Todo</label><br>
+   <br> <input type = "submit" value = "Go" class="btn btn-primary mb-4"/></br>
   </form>
   
 </body>
