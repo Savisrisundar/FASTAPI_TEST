@@ -2,15 +2,30 @@
 {%block content%}
 <h1>Check the attribute you want to get inside</h1>
 
+<head>
+    <title>My HTML Page</title>
+    <style>
+      input[type="radio"] {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+      }
+      input[value="User"]{
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+<body>
 <form action="/USER" method="get">
     <label style="font-size: 2rem;" for="Select">Select</label><br>
-    <input type="checkbox" name="User" value="User">
-    <label>User</label><br>
-    <input type="checkbox" name="User" value="Todo">
+   <br> <input type="radio" name="User" value="User">
+    <label>User</label></br>
+   <br> <input type="radio" name="User" value="Todo">
     <label>Todo</label><br>
-    <input type = "submit" value = "Go" class="btn btn-primary mb-1"/>
-</form>
-
+   <br> <input type = "submit" value = "Go" class="btn btn-primary mb-1"/></br>
+  </form>
+  
+</body>
 
 
 
