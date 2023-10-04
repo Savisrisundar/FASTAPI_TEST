@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 from test_app.users.examples import ex_user_create,ex_user_read

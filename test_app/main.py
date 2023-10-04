@@ -24,6 +24,42 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
 @fastapi_app.get("/")
 async def home(request:Request):
     return templates.TemplateResponse("index.html",{"request":request})
+@fastapi_app.get("/USER", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,User:str,db=Depends(get_async_session)):
+    username=await users_crud.get_saved_username()
+    username1=await users_crud.get_user_by_username(db,username)
+    is_admin=username1.admin
+    if User=="User":
+        
+        if is_admin is True:
+            context={"request":request}
+            return templates.TemplateResponse("users.html",context=context)
+        else:
+            context={"request":request}
+            return templates.TemplateResponse("users_not_admin.html",context=context)
+    else:
+        
+        if is_admin is True:
+            context={"request":request}
+            return templates.TemplateResponse("users_todo.html",context=context)
+        else:
+            context={"request":request}
+            return templates.TemplateResponse("users_not_admin_todo.html",context=context)
+   
+
+@fastapi_app.get("/TODOS", response_class=templates.TemplateResponse)
+
+async def get_user(request:Request,db=Depends(get_async_session)):
+    username=await users_crud.get_saved_username()
+    username1=await users_crud.get_user_by_username(db,username)
+    is_admin=username1.admin
+    if is_admin is True:
+        context={"request":request}
+        return templates.TemplateResponse("users_todo.html",context=context)
+    else:
+        context={"request":request}
+        return templates.TemplateResponse("users_not_admin_todo.html",context=context)
 
 @fastapi_app.get("/login", response_class=templates.TemplateResponse)
 async def login_form(request: Request):
@@ -109,9 +145,9 @@ async def get_user(request:Request,db=Depends(get_async_session)):
     if error_msg:
         context={"request":request,"error_msg": error_msg}
         if db_user.admin is True:
-            return templates.TemplateResponse("users.html",context=context)
+            return templates.TemplateResponse("users_todo.html",context=context)
         else:
-            return templates.TemplateResponse("users_not_admin.html",context=context)
+            return templates.TemplateResponse("users_not_admin_todo.html",context=context)
     user=[db_user.id]
     context={"request":request,"users":user}
     return templates.TemplateResponse("create_todo.html",context=context)

@@ -23,9 +23,9 @@ async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
         if error_msg:
             context={"request":request,"error_msg": error_msg}
         if db_user.admin is True:
-            return templates.TemplateResponse("users.html",context=context)
+            return templates.TemplateResponse("users_todo.html",context=context)
         else:
-            return templates.TemplateResponse("users_not_admin.html",context=context)
+            return templates.TemplateResponse("users_not_admin_todo.html",context=context)
     todo_schema = todosSchema.from_orm(todos)
     todo_schema=dict(todo_schema)
     todo_schema_list = list(todo_schema.values())

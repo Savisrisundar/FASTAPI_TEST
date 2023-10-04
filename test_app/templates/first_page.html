@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{%block content%}
+<h1>Check the attribute you want to get inside</h1>
+
+<form action="/USER" method="get">
+    <label style="font-size: 2rem;" for="Select">Select</label><br>
+    <input type="checkbox" name="User" value="User">
+    <label>User</label><br>
+    <input type="checkbox" name="User" value="Todo">
+    <label>Todo</label><br>
+    <input type = "submit" value = "Go" class="btn btn-primary mb-1"/>
+</form>
+
+
+
+
+
+
+{% endblock content%}

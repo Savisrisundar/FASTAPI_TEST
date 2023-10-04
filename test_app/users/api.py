@@ -103,12 +103,9 @@ async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends
     token = jwt.encode(payload, JWT_SECRET, algorithm=ALGORITHM)
     save_username=await users_crud.save_username(db_user.username)
     save=await users_crud.save_token(token)
-    if db_user.admin is True:
-        context={"request":request}
-        return templates.TemplateResponse("users.html",context=context)
-    else:
-        context={"request":request}
-        return templates.TemplateResponse("users_not_admin.html",context=context)
+    context={"request":request}
+    return templates.TemplateResponse("first_page.html",context=context)
+    
     
 
 @router.post("/update",response_class=templates.TemplateResponse,response_model=UserSchema,status_code=202,dependencies=[Depends(users_crud.check_admin)])
