@@ -1,5 +1,5 @@
 
-from fastapi import APIRouter, Depends,HTTPException,status,Request,Form
+from fastapi import APIRouter, Depends,Request,Form
 from test_app.core.db import get_async_session
 from test_app.todos import crud as todos_crud
 from test_app.users import crud as users_crud

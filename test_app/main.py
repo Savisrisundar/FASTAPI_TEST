@@ -1,12 +1,10 @@
-from fastapi import FastAPI,Request,status,Depends,HTTPException
-from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
+from fastapi import FastAPI,Request,Depends
+from fastapi.security import OAuth2PasswordBearer
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import RedirectResponse
 from test_app import settings
 from test_app.core.db import get_async_session
 from test_app.core.models import HealthCheck
 from test_app.router.endpoints import api_router
-from fastapi.staticfiles import StaticFiles
 from test_app.users import crud as users_crud
 from test_app.todos import crud as todos_crud
 templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
@@ -79,7 +77,6 @@ async def get_user(request:Request,id:int,db=Depends(get_async_session)):
         return templates.TemplateResponse("users.html", context=context)
     if user_by_id.admin is True:
         error_msg="You can not change another Admin's details"
-        #raise HTTPException(status_code=404, detail="You can not change another Admin's details")
     if error_msg:
         context={"request":request,"error_msg": error_msg}
         return templates.TemplateResponse("users.html", context=context)
@@ -151,11 +148,6 @@ async def get_user(request:Request,db=Depends(get_async_session)):
     todos=await todos_crud.get_todos_by_id(todos,db)
     context={"request":request,"user":todos}
     return templates.TemplateResponse("delete_todo.html",context=context)
-
-
-
-
-
 
 fastapi_app.include_router(api_router, prefix=settings.api_v1_prefix)
 @fastapi_app.on_event("startup")

@@ -1,16 +1,13 @@
 from sqlalchemy import select
 from test_app.core.db import get_async_session
 from fastapi import Depends,HTTPException,status
-import bcrypt
 from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session
 from test_app.users.models import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from test_app.users.schemas import UserSchema,UserSchemaCreate
 from passlib.context import CryptContext
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-from test_app.users import api
 templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
 JWT_SECRET="savi"
 ALGORITHM="HS256"

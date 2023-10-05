@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 from test_app.todos.examples import ex_todos_create, ex_todos_read
-from datetime import datetime
 
 
 
