@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends,HTTPException,Request,status,Form
 from fastapi.templating import Jinja2Templates
+from typing import Optional
 import requests
 import json
 from fastapi.responses import RedirectResponse
@@ -69,8 +70,15 @@ async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...)
         passs=user.password
         passs= hashed_password
         result=await users_crud.create_user(db, user)
+        
         return result
     output=await create_user2(UserSchemaCreate(**ex_user_create),db)
+    error_msg=None
+    if output==None:
+        error_msg="There is another id with this username,please give a valid one"
+        if error_msg:
+            context={"request":request,"error_msg": error_msg}
+            return templates.TemplateResponse("create_user.html", context=context)
     user=await users_crud.get_user_by_username(db,output.username)  
     output = UserSchema.from_orm(user)
     output=dict(output)
@@ -79,8 +87,15 @@ async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...)
 
     
     
-@router.post("/token",response_model=Token|None|UserSchema,response_class=templates.TemplateResponse)
+@router.post("/token",response_model=Token|None,response_class=templates.TemplateResponse)
 async def login_user(request:Request,form_data:OAuth2PasswordRequestForm=Depends(),db=Depends(get_async_session)):
+    if form_data is None:
+        return None
+
+    if form_data.username == "":
+        form_data.username = "===="
+    if form_data.password == "":
+        form_data.password = "===="
     db_user =await users_crud.get_user_by_username(db,form_data.username)
     print(db_user)
     error_msg=None

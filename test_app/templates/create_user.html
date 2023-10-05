@@ -11,36 +11,36 @@
     
     <div class="mb-3">
         <label>Fullname</label>
-        <input type="text" name="fullname" placeholder="FullName" class="form-control"/>
+        <input type="text" name="fullname" placeholder="FullName" class="form-control"required/>
     </div>
     <div class="mb-3">
         <label>Email</label>
-        <input type="text" name="email" placeholder="Email" class="form-control"/>
+        <input type="text" name="email" placeholder="Email" class="form-control" required/>
     </div>
     <div class="mb-3">
         <label>Username</label>
-        <input type="text" name="username" placeholder="Username" class="form-control"/>
+        <input type="text" name="username" placeholder="Username" class="form-control"required/>
     </div>
     <div class="mb-3">
         <label>Password</label>
-        <input type="password" name="password" placeholder="Password" class="form-control"/>
+        <input type="password" name="password" placeholder="Password" class="form-control"required/>
     </div>
     <div class="mb-3">
         <label for="is_active">is_active</label><br>
         
-        <input type="checkbox" name="is_active" value="True">
+        <input type="radio" name="is_active" value="True" checked>
         <label>True</label><br>
         
-        <input type="checkbox" name="is_active" value="False">
+        <input type="radio" name="is_active" value="False">
         <label>False</label><br>
   
         
     </div>
     <div class="mb-3">
         <label for="admin">admin</label><br>
-        <input type="checkbox" name="admin" value="True">
+        <input type="radio" name="admin" value="True">
         <label>True</label><br>
-        <input type="checkbox" name="admin" value="False">
+        <input type="radio" name="admin" value="False" checked>
         <label>False</label><br>
 
         
@@ -50,6 +50,12 @@
     
     <input type = "submit" value = "Create" class="btn btn-primary mb-1"/>
   </form>
+
+  {% if error_msg %}
+  <div class="alert alert-danger">
+    {{ error_msg }}
+  </div>
+  {% endif %}
 </body>
 
 {% endblock content%}

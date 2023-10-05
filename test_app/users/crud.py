@@ -50,9 +50,10 @@ async def hash_password(password:str):
 
 async def get_users(db: AsyncSession):
     statement = select(User)
-    result= await db.execute(statement)
-    users=result.scalars().all()
+    result = await db.execute(statement)
+    users = result.scalars().all()
     return users
+
 
 async def authenticate_user(db:AsyncSession,username:str,password:str):
     user=await db.get(User.username,username)
@@ -67,6 +68,12 @@ async def authenticate_user(db:AsyncSession,username:str,password:str):
 async def create_user(db:AsyncSession, user:UserSchemaCreate):
     hash_password=user.password
     del user.password
+    statement=await get_users(db)
+    for use in statement:
+        if use.username==user.username:
+            return None
+        elif use.email==user.email:
+            return None
     db_user=User(**user.dict())
     db_user.hashed_password=hash_password
     db.add(db_user)
