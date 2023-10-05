@@ -1,0 +1,12 @@
+h1 {
+    float: left;
+    width: 50%;
+  }
+  h1 {
+    color: red;
+  }
+  
+  .col-6:nth-child(2) h1 {
+    color: blue;
+  }
+  

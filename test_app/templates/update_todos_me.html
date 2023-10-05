@@ -1,6 +1,21 @@
 {% extends "base.html" %}
 
 {%block content%}
+<form action="/login" method ="get">
+  <div class="logout-button" style="position: fixed; top: 50px; right: 50px;">
+    <button>Log out</button>
+  </div>
+</form>
+<form action="/go_home" method ="get">
+  <div class="home-button" style="position: fixed; top: 50px; right: 150px;">
+    <button>Home</button>
+  </div>
+</form>
+<ul class="breadcrumb">
+  <a href="http://127.0.0.1:8000/USER?User=Todo">Back to Profile</a>&nbsp
+  
+   
+ </ul>
 <head>
   <title>Update Todo</title>
 </head>

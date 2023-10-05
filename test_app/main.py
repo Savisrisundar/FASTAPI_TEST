@@ -53,6 +53,11 @@ async def login_form(request: Request):
   context = {"request": request}
   return templates.TemplateResponse("login.html",context=context)
 
+@fastapi_app.get("/go_home",response_class=templates.TemplateResponse)
+async def go_home(request:Request):
+    context={"request":request}
+    return templates.TemplateResponse("first_page.html",context=context)
+
 @fastapi_app.get("/user", response_class=templates.TemplateResponse)
 
 async def get_user(request:Request):
