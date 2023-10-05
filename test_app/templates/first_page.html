@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{%block content%}
+
+<form action="/login" method ="get">
+  <div class="logout-button" style="position: fixed; top: 50px; right: 50px;">
+    <button>Log out</button>
+  </div>
+</form>
+<ul class="breadcrumb">
+  <a href="/login">Back to Login</a>&nbsp
+  
+   
+ </ul>
+<head>
+    <title>My HTML Page</title>
+    <style>
+      input[type="radio"] {
+        font-size: 2rem;
+        width: 2rem;
+        height: 2rem;
+      }
+      
+   
+    </style>
+  
+  </head>
+<body>
+<form action="/login" method ="get">
+  <div class="logout-button" style="position: fixed; top: 50px; right: 50px;">
+    <button>Log out</button>
+  </div>
+</form>
+<form action="/USER" method="get">
+    <label style="font-size: 3rem;" "font-weight: bold;" for="Select">Select</label><br>
+   <br> <input type="radio" name="User" value="User">
+    <label style="font-size: 2rem;">Profile</label></br>
+   <br> <input type="radio" name="User" value="Todo">
+    <label style="font-size: 2rem;">Todo</label><br>
+   <br> <input type = "submit" value = "Go" class="btn btn-primary mb-4"/></br>
+  </form>
+  
+</body>
+
+
+
+
+
+{% endblock content%}

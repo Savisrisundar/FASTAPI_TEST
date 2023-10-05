@@ -16,11 +16,22 @@ async def get_todosid_by_ownerid(id:int,db:AsyncSession):
     todo=result.scalars().one_or_none()
     
     if todo is None:
+        todos=None
+    else:
+        todos=todo.id
+    
+    return todos
+async def check_for_todo(id:int,db:AsyncSession):
+    statement=select(Todos).where(Todos.owner_id==id)
+    result=await db.execute(statement)
+    todo=result.scalars().one_or_none()
+    
+    if todo is not None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="no todos for this user",)
-    
-    return todo.id
+            detail="todos for this user already existing",)
+    else :
+        return True
         
 
 async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
@@ -31,36 +42,28 @@ async def create_todos(db:AsyncSession,todo:todosSchemaCreate):
     return db_todo
 
 async def get_todos_by_id(id:int,db:AsyncSession):
-    
     todo = await db.get(Todos, id)
     return todo
     
-
-
 async def update_todos(id:int,todo:todosSchema,db:AsyncSession):
     todo_in_db = await db.get(Todos, id)
     if not todo_in_db:
         raise HTTPException(status_code=404, detail="Todo not found")
-
     todo_in_db.task_name = todo.task_name
     todo_in_db.status = todo.status
     todo_in_db.description=todo.description
     todo_in_db.duration=todo.duration
-
+    print(todo_in_db.description)
     await db.commit()
-
     return todo_in_db
 
 
 async def delete_todos(id:int,db:AsyncSession):
-    
     todo = await db.get(Todos, id)
     if not todo:
         raise HTTPException(status_code=404, detail="Todo not found")
-
     await db.delete(todo)
     await db.commit()
-
     return todo
     
     

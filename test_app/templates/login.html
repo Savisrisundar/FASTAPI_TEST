@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{%block content%}
+<ul class="breadcrumb">
+ <a href="/">Home</a>&nbsp
+
+  
+</ul>
+<head>
+  <title>Login</title>
+</head>
+<body>
+  <center><h1>Login</h1></center>
+  <form action="/api/v1/users/token/" method="post">
+    <center><input type="text" name="username" placeholder="Username"></center>
+    <br><center><input type="password" name="password" placeholder="Password"></center></br>
+    <center><input type = "submit" value = "Submit" class="btn btn-primary mb-1"/></center>
+  
+  </form>
+  {% if error_msg %}
+  <div class="alert alert-danger">
+    {{ error_msg }}
+  </div>
+  {% endif %}
+
+  
+</body>
+
+{% endblock content%}

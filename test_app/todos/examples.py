@@ -13,5 +13,5 @@ ex_todos_create={
     "description":"this is an example",
     "duration":2,
     "status":"not done",
-    
+    "owner_id":4
 }

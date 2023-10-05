@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{%block content%}
+<html>
+<body>
+
+<h1>Check The Box You want to go</h1>
+
+<form action="/users.html" method="post">
+  <input type="checkbox" name="Users" value="Users">
+  <label for="User"> User Details</label><br>
+  <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
+
+
+{% endblock content%}
