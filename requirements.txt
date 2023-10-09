@@ -8,3 +8,4 @@ pg8000==1.29.4
 jinja2
 pydantic-settings
 passlib
+jwt
