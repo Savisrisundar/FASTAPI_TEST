@@ -1,4 +1,8 @@
+version: 2
+name: my-service
 services:
   my-service:
+    image: python:3.11.5
+    command: ["python", "./app.py"]
     static_files:
       - templates
