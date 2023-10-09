@@ -29,6 +29,11 @@ async def get_me(request:Request,db=Depends(get_async_session)):
     print(user_schema)
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
 
+@router.get("/all_user",response_model=list[UserSchema],status_code=200,dependencies=[Depends(users_crud.check_admin)])
+async def get_all(request:Request,db=Depends(get_async_session)):
+    username=await users_crud.get_users(db)
+    return templates.TemplateResponse("display_all.html",{"request":request,"users":username})
+
 
 @router.get("/username",response_model=UserSchema|None|dict, status_code=200,dependencies=[Depends(users_crud.check_admin)])
 
