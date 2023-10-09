@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends,Request,Form
 from fastapi.templating import Jinja2Templates
+from typing import List
 from test_app.core.db import get_async_session
 from test_app.users.schemas import UserSchema,UserSchemaCreate,Token
 from test_app.users import crud as users_crud
@@ -29,7 +30,7 @@ async def get_me(request:Request,db=Depends(get_async_session)):
     print(user_schema)
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
 
-@router.get("/all_user",response_model=list[UserSchema],status_code=200,dependencies=[Depends(users_crud.check_admin)])
+@router.get("/all_user",response_model=List[UserSchema],status_code=200,dependencies=[Depends(users_crud.check_admin)])
 async def get_all(request:Request,db=Depends(get_async_session)):
     username=await users_crud.get_users(db)
     return templates.TemplateResponse("display_all.html",{"request":request,"users":username})
