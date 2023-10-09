@@ -13,7 +13,7 @@ fastapi_app = FastAPI(
     version=settings.version,
     openapi_url=f"{settings.api_v1_prefix}/openapi.json",
     debug=settings.debug,
-    templates="templates",
+    templates=templates,
     
 )
 
