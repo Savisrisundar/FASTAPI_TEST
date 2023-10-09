@@ -26,7 +26,7 @@ async def get_todos(request:Request,id:int,db=Depends(get_async_session)):
             return templates.TemplateResponse("users_todo.html",context=context)
         else:
             return templates.TemplateResponse("users_not_admin_todo.html",context=context)
-    todo_schema = todosSchema.from_orm(todos)
+    todo_schema = todosSchema.model_validate(todos,from_attributes=True)
     todo_schema=dict(todo_schema)
     todo_schema_list = list(todo_schema.values())
     print(todo_schema_list)
@@ -50,7 +50,7 @@ async def create_todos(request:Request,task_name:str=Form(...),description:str=F
         todos=await todos_crud.create_todos(db,todo1)
         return todos
     output=await update_user2(todosSchemaCreate(**ex_todos_read),db) 
-    output = todosSchema.from_orm(output)
+    output = todosSchema.model_validate(output,from_attributes=True)
     output=dict(output)
     print(output)
     user_schema_list = list(output.values())
@@ -78,7 +78,7 @@ async def update_todos(request:Request,task_name:str=Form(...),description:str=F
         return todos
     output=await update_user2(todosSchema(**ex_todos_read),db)
     user=await todos_crud.get_todosid_by_ownerid(output.owner_id,db)  
-    output = todosSchema.from_orm(output)
+    output = todosSchema.model_validate(output,from_attributes=True)
     output=dict(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_todos.html",{"request":request,"users": user_schema_list})

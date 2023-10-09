@@ -24,7 +24,7 @@ def get_pays():
 async def get_me(request:Request,db=Depends(get_async_session)):
     username=await users_crud.get_saved_username()
     username1=await users_crud.get_user_by_username(db,username)
-    user_schema = UserSchema.from_orm(username1)
+    user_schema = UserSchema.model_validate(username1,from_attributes=True)
     user_schema=dict(user_schema)
     user_schema_list = list(user_schema.values())
     print(user_schema)
@@ -46,7 +46,7 @@ async def get_user(request:Request,username:str,db=Depends(get_async_session)):
     if error_msg:
         context={"request":request,"error_msg": error_msg}
         return templates.TemplateResponse("users.html", context=context)
-    user_schema = UserSchema.from_orm(user)
+    user_schema = UserSchema.model_validate(user,from_attributes=True)
     user_schema=dict(user_schema)
     user_schema_list = list(user_schema.values())
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
@@ -79,7 +79,7 @@ async def create_user(request:Request,fullname:str=Form(...),email:str=Form(...)
             context={"request":request,"error_msg": error_msg}
             return templates.TemplateResponse("create_user.html", context=context)
     user=await users_crud.get_user_by_username(db,output.username)  
-    output = UserSchema.from_orm(user)
+    output = UserSchema.model_validate(user,from_attributes=True)
     output=dict(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
@@ -141,7 +141,7 @@ async def update_user(request:Request,id:int=Form(...),fullname:str=Form(...),em
         return user
     output=await update_user2(UserSchema(**ex_user_create),db)
     user=await users_crud.get_user_by_username(db,output.username)  
-    output = UserSchema.from_orm(user)
+    output = UserSchema.model_validate(user,from_attributes=True)
     output=dict(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
@@ -177,7 +177,7 @@ async def update_user(request:Request,id:int=Form(...),fullname:str=Form(...),em
         return user
     output=await update_user2(UserSchemaCreate(**ex_user_create),db)
     user=await users_crud.get_user_by_username(db,output.username)  
-    output = UserSchema.from_orm(user)
+    output = UserSchema.model_validate(user,from_attributes=True)
     output=dict(output)
     user_schema_list = list(output.values())
     return templates.TemplateResponse("display_user.html",{"request":request,"users": user_schema_list})
