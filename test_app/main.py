@@ -17,6 +17,7 @@ fastapi_app = FastAPI(
     
 )
 
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/token/")
 
 @fastapi_app.get("/")
