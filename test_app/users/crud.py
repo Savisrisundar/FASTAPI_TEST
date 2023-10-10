@@ -8,7 +8,7 @@ from test_app.users.schemas import UserSchema,UserSchemaCreate
 from passlib.context import CryptContext
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-templates=Jinja2Templates(directory="templates")
+templates=Jinja2Templates(directory="test_app/templates")
 JWT_SECRET="savi"
 ALGORITHM="HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30

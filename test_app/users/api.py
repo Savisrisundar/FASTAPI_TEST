@@ -7,7 +7,7 @@ from test_app.users import crud as users_crud
 from fastapi.security import OAuth2PasswordRequestForm
 import jwt
 from fastapi.security import OAuth2PasswordBearer
-templates=Jinja2Templates(directory="templates")
+templates=Jinja2Templates(directory="test_app/templates")
 router=APIRouter()
 
 JWT_SECRET="savi"
