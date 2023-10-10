@@ -5,7 +5,7 @@ from test_app.todos import crud as todos_crud
 from test_app.users import crud as users_crud
 from fastapi.templating import Jinja2Templates
 from test_app.todos.schemas import todosSchema,todosSchemaCreate
-templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
+templates=Jinja2Templates(directory="FASTAPI_TEST/test_app/templates")
 router=APIRouter()
 
 @router.get("/id",response_class=templates.TemplateResponse,response_model=todosSchema|None,status_code=200,)
