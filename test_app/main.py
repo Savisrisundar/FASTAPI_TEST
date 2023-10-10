@@ -7,7 +7,7 @@ from test_app.core.models import HealthCheck
 from test_app.router.endpoints import api_router
 from test_app.users import crud as users_crud
 from test_app.todos import crud as todos_crud
-templates=Jinja2Templates(directory="c:/Users/Sundark/Desktop/FASTAPI_TEST/test_app/templates")
+templates=Jinja2Templates(directory="templates")
 fastapi_app = FastAPI(
     title=settings.project_name,
     version=settings.version,
